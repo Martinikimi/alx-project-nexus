@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils.text import slugify
+from mptt.models import MPTTModel, TreeForeignKey
 
-class Category(models.Model):
+class Category(MPTTModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
     slug = models.SlugField(unique=True, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
