@@ -1,25 +1,51 @@
 # 🛒 E-Commerce Backend API
 
-A Django REST Framework e-commerce backend with JWT authentication, product management, and order processing.
+A production-ready Django REST Framework e-commerce backend with JWT authentication, complete product management, and order processing system.
 
 ## 🚀 Features
-- User Authentication (JWT)
-- Product & Category Management  
-- Shopping Cart
-- Order System
-- API Documentation
+- ✅ User Authentication (JWT) 
+- ✅ Product & Category Management with hierarchical categories
+- ✅ Shopping Cart with session management
+- ✅ Order System with status tracking
+- ✅ Payment Processing with multiple methods
+- ✅ Product Reviews & Ratings
+- ✅ Admin Dashboard
+- 🔄 API Documentation (Swagger/OpenAPI) - Coming soon
 
 ## 🛠️ Tech Stack
-- Django & Django REST Framework
-- PostgreSQL
-- JWT Authentication
+- **Backend**: Django & Django REST Framework
+- **Database**: PostgreSQL 
+- **Authentication**: JWT (SimpleJWT)
+- **Image Handling**: Pillow
+- **API Docs**: Swagger/OpenAPI (planned)
 
 ## 🗃️ Database Design
 ![ERD Diagram](/docs/erd.png)
 
-## 📦 Installation
+## 📦 Installation & Setup
+
 ```bash
-git clone [your-repo]
+# Clone repository
+git clone https://github.com/yourusername/ecommerce-backend.git
 cd ecommerce-backend
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate   # Windows
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Run migrations
+python manage.py migrate
+
+# Create superuser
+python manage.py createsuperuser
+
+# Start development server
 python manage.py runserver
