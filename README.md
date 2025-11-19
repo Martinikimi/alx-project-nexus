@@ -14,6 +14,9 @@ A Django REST Framework e-commerce backend with JWT authentication, product mana
 - PostgreSQL
 - JWT Authentication
 
+## 🗃️ Database Design
+![ERD Diagram](/docs/erd.png)
+
 ## 📦 Installation
 ```bash
 git clone [your-repo]
