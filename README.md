@@ -10,7 +10,14 @@ A production-ready Django REST Framework e-commerce backend with JWT authenticat
 - ✅ Payment Processing with multiple methods
 - ✅ Product Reviews & Ratings
 - ✅ Admin Dashboard
-- 🔄 API Documentation (Swagger/OpenAPI) - Coming soon
+- 🔄 API Documentation (Swagger/OpenAPI) - Coming soon\
+
+## 🚀 Features
+- ✅ User Authentication (JWT)
+- ✅ Product & Category Management  
+- ✅ Shopping Cart 
+- ✅ **Order System with Auto-Checkout** ✅
+- 🔄 API Documentation (Coming soon)
 
 ## 🛠️ Tech Stack
 - **Backend**: Django & Django REST Framework

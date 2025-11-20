@@ -29,7 +29,7 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         related_query_name='user'
     )
-    # 👆 END OF ADDED LINES
+
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']  

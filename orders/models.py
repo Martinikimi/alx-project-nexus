@@ -5,7 +5,7 @@ from products.models import Product
 from users.models import User
 
 class Order(models.Model):
-    # Order status like package tracking
+    # Order status
     STATUS_CHOICES = [
         ('pending', 'Pending'),      
         ('confirmed', 'Confirmed'),  
@@ -29,7 +29,6 @@ class Order(models.Model):
 
     @classmethod
     def create_from_cart(cls, cart, shipping_address):
-        """Auto-convert cart to order - THE MAGIC BUTTON!"""
         # Generate unique order number
         order_number = f"ORD-{timezone.now().strftime('%Y%m%d%H%M%S')}"
         
@@ -38,7 +37,7 @@ class Order(models.Model):
             user=cart.user,
             order_number=order_number,
             shipping_address=shipping_address,
-            total_amount=0,  # Will update after adding items
+            total_amount=0,  
             status='pending'
         )
         
@@ -50,7 +49,7 @@ class Order(models.Model):
                 order=order,
                 product=cart_item.product,
                 quantity=cart_item.quantity,
-                price=cart_item.product.price  # 👈 FREEZE current price!
+                price=cart_item.product.price 
             )
             total += cart_item.product.price * cart_item.quantity
         
