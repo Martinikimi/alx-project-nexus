@@ -41,7 +41,7 @@ class Order(models.Model):
             status='pending'
         )
         
-        
+    
         total = 0
         for cart_item in cart.items.all():
             # Create OrderItem for each CartItem
