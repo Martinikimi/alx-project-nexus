@@ -25,4 +25,4 @@ python manage.py migrate
 python manage.py createsuperuser
 
 # Start development server
-python manage.py runserver
+python manage.py r
