@@ -7,6 +7,9 @@ from users.models import User
 class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    verified_purchase = models.BooleanField(default=False)
+    comment = models.TextField()
+    helpful_count = models.PositiveIntegerField(default=0)
     
     # Rating: 1-5 stars ⭐⭐⭐⭐☆
     rating = models.PositiveSmallIntegerField(
