@@ -220,6 +220,28 @@
             margin-left: 0.25rem;
         }
 
+        /* Search Bar */
+        .search-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            width: 250px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
         /* Main Content */
         .main-content {
             flex: 1;
@@ -248,6 +270,47 @@
             color: var(--gray);
             max-width: 600px;
             margin: 0 auto 2rem;
+        }
+
+        /* Filter & Sort Controls */
+        .controls-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--dark);
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .price-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
         }
 
         /* Buttons */
@@ -332,6 +395,11 @@
             background: #2563eb;
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
         }
 
         /* Forms */
@@ -439,6 +507,15 @@
             flex: 1;
             padding: 0.5rem;
             font-size: 0.75rem;
+        }
+
+        /* Results Info */
+        .results-info {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
         }
 
         /* Cart & Order Items */
@@ -663,12 +740,25 @@
                 gap: 1rem;
             }
 
+            .search-container {
+                margin-right: 0;
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
             .hero h1 {
                 font-size: 2rem;
             }
 
             .hero p {
                 font-size: 1rem;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
             }
 
             .products-grid {
@@ -719,6 +809,14 @@
         <div class="container">
             <nav class="navbar">
                 <a href="#" class="logo" onclick="navigateTo('/'); return false;">E-Store</a>
+                
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <input type="text" id="globalSearch" class="search-input" placeholder="🔍 Search products..." 
+                           onkeypress="handleGlobalSearch(event)">
+                    <button class="btn-primary btn-small" onclick="performGlobalSearch()">Search</button>
+                </div>
+
                 <ul class="nav-links">
                     <li><a href="#" onclick="navigateTo('/products'); return false;">Products</a></li>
                     <li><a href="#" onclick="navigateTo('/categories'); return false;">Categories</a></li>
@@ -853,6 +951,66 @@
                         <button class="btn-secondary" onclick="loadProducts()">🔄 Refresh</button>
                     </div>
                 </div>
+
+                <!-- Search and Filter Controls -->
+                <div class="controls-container">
+                    <div class="controls-grid">
+                        <!-- Search -->
+                        <div class="filter-group">
+                            <label class="filter-label">🔍 Search Products</label>
+                            <input type="text" id="searchInput" class="search-input" placeholder="Enter product name..." 
+                                   onkeypress="handleSearchEnter(event)">
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div class="filter-group">
+                            <label class="filter-label">📂 Category</label>
+                            <select id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <!-- Categories will be populated dynamically -->
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="filter-group">
+                            <label class="filter-label">💰 Price Range</label>
+                            <div class="price-inputs">
+                                <input type="number" id="minPrice" class="price-input" placeholder="Min $" min="0">
+                                <input type="number" id="maxPrice" class="price-input" placeholder="Max $" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Sort Options -->
+                        <div class="filter-group">
+                            <label class="filter-label">📊 Sort By</label>
+                            <select id="sortOption">
+                                <option value="">Newest First</option>
+                                <option value="price_asc">Price: Low to High</option>
+                                <option value="price_desc">Price: High to Low</option>
+                                <option value="date_asc">Date: Oldest First</option>
+                                <option value="name_asc">Name: A to Z</option>
+                                <option value="name_desc">Name: Z to A</option>
+                            </select>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="filter-group">
+                            <label class="filter-label">&nbsp;</label>
+                            <div class="flex gap-2">
+                                <button class="btn-primary btn-small w-full" onclick="applyFilters()">
+                                    ✅ Apply Filters
+                                </button>
+                                <button class="btn-secondary btn-small" onclick="clearFilters()">
+                                    🗑️ Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Info -->
+                <div id="resultsInfo" class="results-info hidden"></div>
+
                 <div id="productsLoading" class="spinner"></div>
                 <div id="productsGrid" class="products-grid"></div>
             </div>
@@ -951,6 +1109,161 @@
         let products = [];
         let categories = [];
         let currentOrderId = null;
+        let currentFilters = {
+            search: '',
+            category: '',
+            minPrice: '',
+            maxPrice: '',
+            sort: ''
+        };
+
+        // NEW: Global Search Functionality
+        function handleGlobalSearch(event) {
+            if (event.key === 'Enter') {
+                performGlobalSearch();
+            }
+        }
+
+        function performGlobalSearch() {
+            const searchQuery = document.getElementById('globalSearch').value.trim();
+            if (searchQuery) {
+                currentFilters.search = searchQuery;
+                navigateTo('/products');
+                // Set the search input in products page
+                setTimeout(() => {
+                    if (document.getElementById('searchInput')) {
+                        document.getElementById('searchInput').value = searchQuery;
+                        applyFilters();
+                    }
+                }, 100);
+            }
+        }
+
+        // NEW: Filter Functions
+        function handleSearchEnter(event) {
+            if (event.key === 'Enter') {
+                applyFilters();
+            }
+        }
+
+        async function loadCategoriesForFilter() {
+            try {
+                const response = await fetch(`${CATEGORIES_API}/`);
+                if (response.ok) {
+                    const categories = await response.json();
+                    const categorySelect = document.getElementById('categoryFilter');
+                    categorySelect.innerHTML = '<option value="">All Categories</option>' +
+                        categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+                    
+                    // Set current category if exists
+                    if (currentFilters.category) {
+                        categorySelect.value = currentFilters.category;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading categories for filter:', error);
+            }
+        }
+
+        function applyFilters() {
+            currentFilters = {
+                search: document.getElementById('searchInput').value,
+                category: document.getElementById('categoryFilter').value,
+                minPrice: document.getElementById('minPrice').value,
+                maxPrice: document.getElementById('maxPrice').value,
+                sort: document.getElementById('sortOption').value
+            };
+            loadProductsWithFilters();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('sortOption').value = '';
+            currentFilters = {
+                search: '',
+                category: '',
+                minPrice: '',
+                maxPrice: '',
+                sort: ''
+            };
+            loadProductsWithFilters();
+        }
+
+        async function loadProductsWithFilters() {
+            const loadingElement = document.getElementById('productsLoading');
+            const gridElement = document.getElementById('productsGrid');
+            const resultsInfo = document.getElementById('resultsInfo');
+            
+            loadingElement.classList.remove('hidden');
+            gridElement.innerHTML = '';
+            resultsInfo.classList.add('hidden');
+
+            try {
+                // Build query parameters
+                const params = new URLSearchParams();
+                
+                if (currentFilters.search) params.append('q', currentFilters.search);
+                if (currentFilters.category) params.append('category', currentFilters.category);
+                if (currentFilters.minPrice) params.append('min_price', currentFilters.minPrice);
+                if (currentFilters.maxPrice) params.append('max_price', currentFilters.maxPrice);
+                if (currentFilters.sort) params.append('sort', currentFilters.sort);
+
+                const url = `${PRODUCTS_API}/?${params.toString()}`;
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    products = await response.json();
+                    
+                    // Display results info
+                    if (Object.keys(currentFilters).some(key => currentFilters[key])) {
+                        let filterText = [];
+                        if (currentFilters.search) filterText.push(`Search: "${currentFilters.search}"`);
+                        if (currentFilters.category) {
+                            const categoryName = document.getElementById('categoryFilter').options[document.getElementById('categoryFilter').selectedIndex].text;
+                            filterText.push(`Category: ${categoryName}`);
+                        }
+                        if (currentFilters.minPrice || currentFilters.maxPrice) {
+                            const priceRange = [];
+                            if (currentFilters.minPrice) priceRange.push(`From $${currentFilters.minPrice}`);
+                            if (currentFilters.maxPrice) priceRange.push(`To $${currentFilters.maxPrice}`);
+                            filterText.push(`Price: ${priceRange.join(' ')}`);
+                        }
+                        if (currentFilters.sort) {
+                            const sortText = document.getElementById('sortOption').options[document.getElementById('sortOption').selectedIndex].text;
+                            filterText.push(`Sorted by: ${sortText}`);
+                        }
+                        
+                        resultsInfo.innerHTML = `
+                            <strong>${products.length} products found</strong>
+                            ${filterText.length ? `<br><small>${filterText.join(' • ')}</small>` : ''}
+                        `;
+                        resultsInfo.classList.remove('hidden');
+                    }
+                    
+                    displayProducts(products);
+                } else {
+                    throw new Error('Failed to load products');
+                }
+            } catch (error) {
+                gridElement.innerHTML = `<div class="error">❌ Error loading products: ${error.message}</div>`;
+            } finally {
+                loadingElement.classList.add('hidden');
+            }
+        }
+
+        // UPDATED: Product Functions with Filter Support
+        async function loadProducts() {
+            // Load categories for filter dropdown
+            await loadCategoriesForFilter();
+            // Load products with current filters
+            await loadProductsWithFilters();
+        }
+
+        // REST OF YOUR EXISTING JAVASCRIPT CODE REMAINS EXACTLY THE SAME
+        // Only the product loading part is enhanced with filters
 
         // URL Routing System
         function navigateTo(path) {
@@ -1232,29 +1545,6 @@
             }
         }
 
-        // Product Functions
-        async function loadProducts() {
-            const loadingElement = document.getElementById('productsLoading');
-            const gridElement = document.getElementById('productsGrid');
-            
-            loadingElement.classList.remove('hidden');
-            gridElement.innerHTML = '';
-
-            try {
-                const response = await fetch(`${PRODUCTS_API}/`);
-                if (response.ok) {
-                    products = await response.json();
-                    displayProducts(products);
-                } else {
-                    throw new Error('Failed to load products');
-                }
-            } catch (error) {
-                gridElement.innerHTML = `<div class="error">❌ Error loading products: ${error.message}</div>`;
-            } finally {
-                loadingElement.classList.add('hidden');
-            }
-        }
-
         async function loadFeaturedProducts() {
             try {
                 const response = await fetch(`${PRODUCTS_API}/featured/`);
@@ -1295,7 +1585,13 @@
         function displayProducts(products) {
             const gridElement = document.getElementById('productsGrid');
             if (products.length === 0) {
-                gridElement.innerHTML = '<div class="info">No products found</div>';
+                gridElement.innerHTML = `
+                    <div class="info w-full text-center">
+                        <h3>No products found</h3>
+                        <p>Try adjusting your search criteria or filters</p>
+                        <button class="btn-secondary mt-2" onclick="clearFilters()">Clear All Filters</button>
+                    </div>
+                `;
                 return;
             }
 
