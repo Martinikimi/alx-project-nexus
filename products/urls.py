@@ -9,6 +9,7 @@ urlpatterns = [
     path('<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
     path('category/<int:category_id>/', views.CategoryProductsView.as_view(), name='category-products'),
     path('featured/', views.FeaturedProductsView.as_view(), name='featured-products'),
+    path('search/', views.ProductSearchView.as_view(), name='product-search'),
     
     # Admin endpoints (admin users only)
     path('create/', views.ProductCreateView.as_view(), name='product-create'),

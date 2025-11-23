@@ -6,6 +6,32 @@ from .serializers import (ProductListSerializer,ProductDetailSerializer,ProductC
 from categories.models import Category
 
 
+class ProductSearchView(generics.ListAPIView):
+    """
+    Basic product search
+    - Public access (no login required)
+    - Searches in product names and descriptions
+    - Example: /api/products/search/?q=running+shoes
+    """
+    serializer_class = ProductListSerializer
+    permission_classes = [permissions.AllowAny]
+    
+    def get_queryset(self):
+        search_query = self.request.query_params.get('q', '')
+        
+        if search_query:
+            # Search both name and description
+            return Product.objects.filter(
+                Q(name__icontains=search_query) | 
+                Q(description__icontains=search_query),
+                is_active=True
+            ).select_related('category')
+        else:
+            # If no search query, return all active products
+            return Product.objects.filter(is_active=True).select_related('category')
+
+
+
 class ProductListView(generics.ListAPIView):
     """
     List all active products
@@ -20,7 +46,6 @@ class ProductListView(generics.ListAPIView):
     def get_queryset(self):
         # Return active products only
         return Product.objects.filter(is_active=True).select_related('category')
-
 
 class ProductDetailView(generics.RetrieveAPIView):
     """
