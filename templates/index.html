@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce Store</title>
+    <title>NexusStore | Premium E-Commerce Experience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS Variables for consistent theming */
+        /* Modern CSS Variables */
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
@@ -20,9 +21,13 @@
             --gray: #64748b;
             --gray-light: #cbd5e1;
             --border-radius: 12px;
+            --border-radius-lg: 16px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 6px 10px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --transition: all 0.3s ease;
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s ease;
         }
 
         /* Base Styles */
@@ -33,10 +38,10 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             color: var(--dark);
-            background-color: #f9fafb;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -44,32 +49,38 @@
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
 
-        /* Typography */
+        /* Enhanced Typography */
         h1, h2, h3, h4, h5, h6 {
             font-weight: 700;
             line-height: 1.2;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.75rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         h2 {
-            font-size: 2rem;
+            font-size: 2.25rem;
+            color: var(--dark);
         }
 
         h3 {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
         }
 
         p {
             margin-bottom: 1rem;
+            color: var(--gray);
         }
 
         a {
@@ -123,6 +134,10 @@
             margin-bottom: 1rem;
         }
 
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
         .mt-1 {
             margin-top: 0.25rem;
         }
@@ -139,12 +154,20 @@
             margin-top: 1rem;
         }
 
-        .gap-1 {
-            gap: 0.25rem;
+        .mt-6 {
+            margin-top: 1.5rem;
         }
 
         .gap-2 {
             gap: 0.5rem;
+        }
+
+        .gap-3 {
+            gap: 0.75rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
         }
 
         .grid-2 {
@@ -153,43 +176,55 @@
             gap: 1.5rem;
         }
 
-        /* Header & Navigation */
+        /* Premium Header & Navigation */
         header {
-            background: white;
-            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
         }
 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            padding: 1.25rem 0;
         }
 
         .logo {
-            font-size: 1.75rem;
+            font-size: 2rem;
             font-weight: 800;
             color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 1.5rem;
+            gap: 2rem;
             align-items: center;
         }
 
         .nav-links a {
-            font-weight: 500;
+            font-weight: 600;
             color: var(--dark);
             position: relative;
             padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .nav-links a:hover {
@@ -220,20 +255,23 @@
             margin-left: 0.25rem;
         }
 
-        /* Search Bar */
+        /* Enhanced Search Bar */
         .search-container {
             display: flex;
             gap: 0.5rem;
             margin-right: 1rem;
+            flex: 1;
+            max-width: 400px;
         }
 
         .search-input {
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1.25rem;
             border: 1px solid var(--gray-light);
             border-radius: var(--border-radius);
-            width: 250px;
-            font-size: 0.875rem;
+            width: 100%;
+            font-size: 0.9rem;
             transition: var(--transition);
+            background: white;
         }
 
         .search-input:focus {
@@ -245,96 +283,140 @@
         /* Main Content */
         .main-content {
             flex: 1;
-            padding: 2rem 0;
+            padding: 2.5rem 0;
         }
 
-        /* Hero Section */
+        /* Premium Hero Section */
         .hero {
             text-align: center;
-            padding: 4rem 0;
-            background: linear-gradient(135deg, #f0f4ff 0%, #e6f7ff 100%);
-            border-radius: var(--border-radius);
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: var(--border-radius-lg);
             margin-bottom: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23ffffff" opacity="0.1"><polygon points="1000,100 1000,0 0,100"></polygon></svg>');
+            background-size: cover;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, #e0e7ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero p {
-            font-size: 1.25rem;
-            color: var(--gray);
-            max-width: 600px;
-            margin: 0 auto 2rem;
+            font-size: 1.375rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
         }
 
-        /* Filter & Sort Controls */
+        /* Enhanced Filter & Sort Controls */
         .controls-container {
             background: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .controls-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
             align-items: end;
         }
 
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .filter-label {
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .price-inputs {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .price-input {
             flex: 1;
-            padding: 0.5rem;
+            padding: 0.75rem;
             border: 1px solid var(--gray-light);
             border-radius: var(--border-radius);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
+            transition: var(--transition);
         }
 
-        /* Buttons */
+        .price-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Premium Buttons */
         button {
             cursor: pointer;
             border: none;
             border-radius: var(--border-radius);
-            padding: 0.75rem 1.5rem;
+            padding: 0.875rem 1.75rem;
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: var(--transition);
+        }
+
+        button:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
+            box-shadow: var(--shadow);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
@@ -343,6 +425,7 @@
             background: white;
             color: var(--dark);
             border: 1px solid var(--gray-light);
+            box-shadow: var(--shadow);
         }
 
         .btn-secondary:hover {
@@ -350,86 +433,89 @@
             border-color: var(--primary);
             color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-success {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success), #0da271);
             color: white;
+            box-shadow: var(--shadow);
         }
 
         .btn-success:hover {
-            background: #0da271;
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: linear-gradient(135deg, var(--danger), #dc2626);
             color: white;
+            box-shadow: var(--shadow);
         }
 
         .btn-danger:hover {
-            background: #dc2626;
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
 
         .btn-warning {
-            background: var(--warning);
+            background: linear-gradient(135deg, var(--warning), #d97706);
             color: white;
+            box-shadow: var(--shadow);
         }
 
         .btn-warning:hover {
-            background: #d97706;
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
 
         .btn-info {
-            background: var(--info);
+            background: linear-gradient(135deg, var(--info), #2563eb);
             color: white;
+            box-shadow: var(--shadow);
         }
 
         .btn-info:hover {
-            background: #2563eb;
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
 
         .btn-small {
-            padding: 0.5rem 1rem;
-            font-size: 0.75rem;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.8rem;
         }
 
-        /* Forms */
+        /* Enhanced Forms */
         .form-container {
             max-width: 600px;
             margin: 0 auto;
             background: white;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
             color: var(--dark);
+            font-size: 0.95rem;
         }
 
         input, textarea, select {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.875rem 1.25rem;
             border: 1px solid var(--gray-light);
             border-radius: var(--border-radius);
             font-size: 1rem;
             transition: var(--transition);
+            background: white;
         }
 
         input:focus, textarea:focus, select:focus {
@@ -438,99 +524,215 @@
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
-        /* Product Grid & Cards */
+        /* Premium Product Grid & Cards */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
         .product-card {
             background: white;
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-lg);
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
             transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
         }
 
         .product-image {
-            height: 200px;
-            background: #f1f5f9;
+            height: 220px;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image::before {
+            opacity: 1;
         }
 
         .product-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
         }
 
         .product-info {
-            padding: 1.5rem;
+            padding: 1.75rem;
         }
 
         .product-name {
-            font-weight: 600;
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
         }
 
         .product-price {
-            font-weight: 700;
-            font-size: 1.25rem;
+            font-weight: 800;
+            font-size: 1.5rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .product-category {
             color: var(--gray);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .product-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .product-actions button {
             flex: 1;
-            padding: 0.5rem;
-            font-size: 0.75rem;
+            padding: 0.75rem;
+            font-size: 0.85rem;
         }
 
-        /* Results Info */
+        /* Enhanced Results Info */
         .results-info {
-            background: var(--light);
-            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.25rem;
             border-radius: var(--border-radius);
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-dark);
+            box-shadow: var(--shadow);
         }
 
-        /* Cart & Order Items */
+        /* Premium Pagination Controls */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .pagination-info {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn {
+            padding: 0.75rem 1rem;
+            background: white;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            color: var(--dark);
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .pagination-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .page-size-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .page-size-selector select {
+            padding: 0.625rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            width: auto;
+            background: white;
+        }
+
+        /* Enhanced Cart & Order Items */
         .cart-item, .order-item {
             background: white;
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow);
+            border-radius: var(--border-radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .cart-item:hover, .order-item:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-2px);
         }
 
         .order-item-detail {
             display: flex;
             justify-content: space-between;
-            padding: 1rem 0;
+            padding: 1.25rem 0;
             border-bottom: 1px solid var(--gray-light);
         }
 
@@ -541,39 +743,43 @@
         .quantity-controls {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin: 0.75rem 0;
+            gap: 0.75rem;
+            margin: 1rem 0;
         }
 
         .quantity-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
         }
 
         .quantity-display {
-            padding: 0 0.75rem;
-            font-weight: 600;
+            padding: 0 1rem;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
         .order-actions {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
             flex-wrap: wrap;
         }
 
-        /* Status Badges */
+        /* Premium Status Badges */
         .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
             border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 700;
             text-transform: capitalize;
+            gap: 0.5rem;
         }
 
         .status-pending {
@@ -601,43 +807,45 @@
             color: #991b1b;
         }
 
-        /* Messages */
+        /* Enhanced Messages */
         .error, .success, .info, .warning {
-            padding: 1rem;
+            padding: 1.25rem;
             border-radius: var(--border-radius);
-            margin-bottom: 1rem;
-            font-weight: 500;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            border-left: 4px solid;
+            box-shadow: var(--shadow);
         }
 
         .error {
             background: #fef2f2;
             color: var(--danger);
-            border-left: 4px solid var(--danger);
+            border-left-color: var(--danger);
         }
 
         .success {
             background: #f0fdf4;
             color: var(--success);
-            border-left: 4px solid var(--success);
+            border-left-color: var(--success);
         }
 
         .info {
             background: #eff6ff;
             color: var(--info);
-            border-left: 4px solid var(--info);
+            border-left-color: var(--info);
         }
 
         .warning {
             background: #fffbeb;
             color: var(--warning);
-            border-left: 4px solid var(--warning);
+            border-left-color: var(--warning);
         }
 
-        /* Spinner */
+        /* Premium Spinner */
         .spinner {
-            width: 40px;
-            height: 40px;
-            margin: 2rem auto;
+            width: 48px;
+            height: 48px;
+            margin: 3rem auto;
             border: 4px solid rgba(99, 102, 241, 0.1);
             border-left: 4px solid var(--primary);
             border-radius: 50%;
@@ -649,23 +857,24 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Review Section */
+        /* Enhanced Review Section */
         .review-form {
             background: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-top: 1.5rem;
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            margin-top: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .rating-stars {
             display: flex;
-            gap: 0.25rem;
-            margin-bottom: 1rem;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .star {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             color: var(--gray-light);
             cursor: pointer;
             transition: var(--transition);
@@ -673,26 +882,28 @@
 
         .star:hover, .star.active {
             color: var(--warning);
+            transform: scale(1.1);
         }
 
-        /* Back to Top Button */
+        /* Premium Back to Top Button */
         .back-to-top {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary);
+            bottom: 2.5rem;
+            right: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-xl);
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
             z-index: 99;
+            font-size: 1.25rem;
         }
 
         .back-to-top.visible {
@@ -701,52 +912,163 @@
         }
 
         .back-to-top:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-xl);
         }
 
-        /* Footer */
+        /* Premium Footer */
         footer {
-            background: var(--dark);
+            background: linear-gradient(135deg, var(--dark), #0f172a);
             color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
         }
 
         .footer-content {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            margin-bottom: 2rem;
         }
 
-        footer h3 {
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links h3 {
             color: white;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
         }
 
-        footer p {
+        .footer-links a {
             color: #cbd5e1;
-            margin-bottom: 0;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        footer .logo {
+            font-size: 1.75rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 1.25rem;
             }
 
             .nav-links {
-                gap: 1rem;
+                gap: 1.25rem;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             .search-container {
                 margin-right: 0;
                 width: 100%;
+                max-width: 100%;
             }
 
-            .search-input {
+            .hero {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 2rem;
                 width: 100%;
+            }
+
+            .order-actions {
+                flex-direction: column;
+            }
+
+            .order-actions button {
+                width: 100%;
+            }
+
+            .pagination-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1.5rem;
+            }
+
+            .pagination-controls {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .page-size-selector {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .product-actions {
+                flex-direction: column;
             }
 
             .hero h1 {
@@ -757,78 +1079,62 @@
                 font-size: 1rem;
             }
 
-            .controls-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .order-actions {
-                flex-direction: column;
-            }
-
-            .order-actions button {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 0.5rem;
-            }
-
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-container {
-                padding: 1.5rem;
-            }
-
-            .product-actions {
-                flex-direction: column;
+            .back-to-top {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 48px;
+                height: 48px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Premium Header -->
     <header>
         <div class="container">
             <nav class="navbar">
-                <a href="#" class="logo" onclick="navigateTo('/'); return false;">E-Store</a>
+                <a href="#" class="logo" onclick="navigateTo('/'); return false;">
+                    <i class="fas fa-gem logo-icon"></i>
+                    NexusStore
+                </a>
                 
-                <!-- Search Bar -->
+                <!-- Enhanced Search Bar -->
                 <div class="search-container">
                     <input type="text" id="globalSearch" class="search-input" placeholder="🔍 Search products..." 
                            onkeypress="handleGlobalSearch(event)">
-                    <button class="btn-primary btn-small" onclick="performGlobalSearch()">Search</button>
+                    <button class="btn-primary btn-small" onclick="performGlobalSearch()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
                 </div>
 
                 <ul class="nav-links">
-                    <li><a href="#" onclick="navigateTo('/products'); return false;">Products</a></li>
-                    <li><a href="#" onclick="navigateTo('/categories'); return false;">Categories</a></li>
-                    <li><a href="#" onclick="navigateTo('/cart'); return false;">Cart <span id="cartCount" class="cart-badge hidden">0</span></a></li>
+                    <li><a href="#" onclick="navigateTo('/products'); return false;">
+                        <i class="fas fa-store"></i> Products
+                    </a></li>
+                    <li><a href="#" onclick="navigateTo('/categories'); return false;">
+                        <i class="fas fa-tags"></i> Categories
+                    </a></li>
+                    <li><a href="#" onclick="navigateTo('/cart'); return false;">
+                        <i class="fas fa-shopping-cart"></i> Cart <span id="cartCount" class="cart-badge hidden">0</span>
+                    </a></li>
                     <li id="authLinks">
-                        <a href="#" onclick="navigateTo('/login'); return false;">Login</a>
-                        <a href="#" onclick="navigateTo('/register'); return false;">Register</a>
+                        <a href="#" onclick="navigateTo('/login'); return false;">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <a href="#" onclick="navigateTo('/register'); return false;">
+                            <i class="fas fa-user-plus"></i> Register
+                        </a>
                     </li>
                     <li id="userLinks" class="hidden">
-                        <a href="#" onclick="navigateTo('/profile'); return false;">Profile</a>
-                        <a href="#" onclick="navigateTo('/orders'); return false;">Orders</a>
-                        <a href="#" onclick="logout(); return false;">Logout</a>
+                        <a href="#" onclick="navigateTo('/profile'); return false;">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                        <a href="#" onclick="navigateTo('/orders'); return false;">
+                            <i class="fas fa-clipboard-list"></i> Orders
+                        </a>
+                        <a href="#" onclick="logout(); return false;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -841,21 +1147,21 @@
             <!-- Home/Landing Page -->
             <div id="homePage" class="hidden">
                 <div class="hero">
-                    <h1>Welcome to E-Store</h1>
-                    <p>Discover amazing products at unbeatable prices. Shop with confidence and style.</p>
-                    <div class="flex justify-center gap-2 mt-3">
+                    <h1>Welcome to NexusStore</h1>
+                    <p>Discover premium products with exceptional quality. Experience shopping redefined with fast delivery and outstanding customer service.</p>
+                    <div class="flex justify-center gap-3 mt-4">
                         <button class="btn-primary" onclick="navigateTo('/products')">
-                            🛍️ Start Shopping
+                            <i class="fas fa-shopping-bag"></i> Start Shopping
                         </button>
                         <button class="btn-secondary" onclick="navigateTo('/categories')">
-                            📂 Browse Categories
+                            <i class="fas fa-compass"></i> Explore Categories
                         </button>
                     </div>
                 </div>
                 
                 <!-- Featured Products Preview -->
-                <div class="mt-3">
-                    <h2 class="text-center mb-2">Featured Products</h2>
+                <div class="mt-6">
+                    <h2 class="text-center mb-4">Featured Products</h2>
                     <div id="featuredProducts" class="products-grid">
                         <!-- Featured products will be loaded here -->
                     </div>
@@ -864,91 +1170,107 @@
 
             <!-- Login Form -->
             <div id="loginForm" class="form-container hidden">
-                <h2 class="text-center">🔐 Login</h2>
+                <h2 class="text-center"><i class="fas fa-lock"></i> Login</h2>
                 <form id="loginFormElement">
                     <div class="form-group">
-                        <label>📧 Email:</label>
+                        <label><i class="fas fa-envelope"></i> Email:</label>
                         <input type="email" id="loginEmail" required placeholder="Enter your email">
                     </div>
                     <div class="form-group">
-                        <label>🔒 Password:</label>
+                        <label><i class="fas fa-key"></i> Password:</label>
                         <input type="password" id="loginPassword" required placeholder="Enter your password">
                     </div>
-                    <button type="submit" class="btn-primary w-full">Login</button>
+                    <button type="submit" class="btn-primary w-full">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
                 </form>
-                <div class="text-center mt-2">
+                <div class="text-center mt-3">
                     <p>Don't have an account?</p>
-                    <button class="btn-secondary mt-1" onclick="navigateTo('/register')">Create Account</button>
+                    <button class="btn-secondary mt-2" onclick="navigateTo('/register')">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
                 </div>
                 <div id="loginMessage"></div>
             </div>
 
             <!-- Register Form -->
             <div id="registerForm" class="form-container hidden">
-                <h2 class="text-center">👤 Register</h2>
+                <h2 class="text-center"><i class="fas fa-user-plus"></i> Register</h2>
                 <form id="registerFormElement">
                     <div class="form-group">
-                        <label>📧 Email:</label>
+                        <label><i class="fas fa-envelope"></i> Email:</label>
                         <input type="email" id="regEmail" required placeholder="Enter your email">
                     </div>
                     <div class="form-group">
-                        <label>👤 Username:</label>
+                        <label><i class="fas fa-user"></i> Username:</label>
                         <input type="text" id="regUsername" required placeholder="Choose a username">
                     </div>
-                    <div class="form-group">
-                        <label>📛 First Name:</label>
-                        <input type="text" id="regFirstName" required placeholder="Enter your first name">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> First Name:</label>
+                            <input type="text" id="regFirstName" required placeholder="First name">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Last Name:</label>
+                            <input type="text" id="regLastName" required placeholder="Last name">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>📛 Last Name:</label>
-                        <input type="text" id="regLastName" required placeholder="Enter your last name">
-                    </div>
-                    <div class="form-group">
-                        <label>📞 Phone Number:</label>
+                        <label><i class="fas fa-phone"></i> Phone Number:</label>
                         <input type="tel" id="regPhone" placeholder="Enter your phone number">
                     </div>
                     <div class="form-group">
-                        <label>🎂 Date of Birth:</label>
+                        <label><i class="fas fa-birthday-cake"></i> Date of Birth:</label>
                         <input type="date" id="regDob" required>
                     </div>
                     <div class="form-group">
-                        <label>🏠 Address:</label>
+                        <label><i class="fas fa-home"></i> Address:</label>
                         <textarea id="regAddress" rows="3" placeholder="Enter your address"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label>🔒 Password:</label>
-                        <input type="password" id="regPassword" required placeholder="Create a password">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> Password:</label>
+                            <input type="password" id="regPassword" required placeholder="Create a password">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-check-circle"></i> Confirm Password:</label>
+                            <input type="password" id="regPasswordConfirm" required placeholder="Confirm your password">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>✅ Confirm Password:</label>
-                        <input type="password" id="regPasswordConfirm" required placeholder="Confirm your password">
-                    </div>
-                    <button type="submit" class="btn-success w-full">Create Account</button>
+                    <button type="submit" class="btn-success w-full">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
                 </form>
-                <div class="text-center mt-2">
+                <div class="text-center mt-3">
                     <p>Already have an account?</p>
-                    <button class="btn-secondary mt-1" onclick="navigateTo('/login')">Sign In</button>
+                    <button class="btn-secondary mt-2" onclick="navigateTo('/login')">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
                 </div>
                 <div id="registerMessage"></div>
             </div>
 
             <!-- Profile Section -->
             <div id="profileSection" class="form-container hidden">
-                <h2 class="text-center">👤 User Profile</h2>
+                <h2 class="text-center"><i class="fas fa-user-circle"></i> User Profile</h2>
                 <div id="profileData">
                     <div class="spinner"></div>
                 </div>
-                <div class="text-center mt-2">
-                    <button class="btn-danger" onclick="logout()">🚪 Logout</button>
+                <div class="text-center mt-4">
+                    <button class="btn-danger" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
                 </div>
             </div>
 
             <!-- Products Page -->
             <div id="productsPage" class="hidden">
-                <div class="flex justify-between items-center mb-2">
-                    <h2>🛍️ All Products</h2>
-                    <div class="flex gap-1">
-                        <button class="btn-secondary" onclick="loadProducts()">🔄 Refresh</button>
+                <div class="flex justify-between items-center mb-4">
+                    <h2><i class="fas fa-store"></i> All Products</h2>
+                    <div class="flex gap-2">
+                        <button class="btn-secondary" onclick="loadProducts()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
                     </div>
                 </div>
 
@@ -957,14 +1279,14 @@
                     <div class="controls-grid">
                         <!-- Search -->
                         <div class="filter-group">
-                            <label class="filter-label">🔍 Search Products</label>
+                            <label class="filter-label"><i class="fas fa-search"></i> Search Products</label>
                             <input type="text" id="searchInput" class="search-input" placeholder="Enter product name..." 
                                    onkeypress="handleSearchEnter(event)">
                         </div>
 
                         <!-- Category Filter -->
                         <div class="filter-group">
-                            <label class="filter-label">📂 Category</label>
+                            <label class="filter-label"><i class="fas fa-tags"></i> Category</label>
                             <select id="categoryFilter">
                                 <option value="">All Categories</option>
                                 <!-- Categories will be populated dynamically -->
@@ -973,7 +1295,7 @@
 
                         <!-- Price Range -->
                         <div class="filter-group">
-                            <label class="filter-label">💰 Price Range</label>
+                            <label class="filter-label"><i class="fas fa-dollar-sign"></i> Price Range</label>
                             <div class="price-inputs">
                                 <input type="number" id="minPrice" class="price-input" placeholder="Min $" min="0">
                                 <input type="number" id="maxPrice" class="price-input" placeholder="Max $" min="0">
@@ -982,7 +1304,7 @@
 
                         <!-- Sort Options -->
                         <div class="filter-group">
-                            <label class="filter-label">📊 Sort By</label>
+                            <label class="filter-label"><i class="fas fa-sort"></i> Sort By</label>
                             <select id="sortOption">
                                 <option value="">Newest First</option>
                                 <option value="price_asc">Price: Low to High</option>
@@ -998,10 +1320,10 @@
                             <label class="filter-label">&nbsp;</label>
                             <div class="flex gap-2">
                                 <button class="btn-primary btn-small w-full" onclick="applyFilters()">
-                                    ✅ Apply Filters
+                                    <i class="fas fa-filter"></i> Apply Filters
                                 </button>
                                 <button class="btn-secondary btn-small" onclick="clearFilters()">
-                                    🗑️ Clear
+                                    <i class="fas fa-trash"></i> Clear
                                 </button>
                             </div>
                         </div>
@@ -1013,50 +1335,69 @@
 
                 <div id="productsLoading" class="spinner"></div>
                 <div id="productsGrid" class="products-grid"></div>
+                
+                <!-- Pagination Controls -->
+                <div id="paginationContainer" class="pagination-container hidden">
+                    <div class="pagination-info" id="paginationInfo"></div>
+                    <div class="pagination-controls" id="paginationControls"></div>
+                    <div class="page-size-selector">
+                        <label for="pageSizeSelect">Show:</label>
+                        <select id="pageSizeSelect" onchange="changePageSize(this.value)">
+                            <option value="15">15</option>
+                            <option value="24">24</option>
+                            <option value="36">36</option>
+                            <option value="48">48</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <!-- Categories Page -->
             <div id="categoriesPage" class="hidden">
-                <h2 class="text-center mb-2">📂 Categories</h2>
+                <h2 class="text-center mb-4"><i class="fas fa-tags"></i> Categories</h2>
                 <div id="categoriesLoading" class="spinner"></div>
                 <div id="categoriesList" class="products-grid"></div>
             </div>
 
             <!-- Cart Page -->
             <div id="cartPage" class="hidden">
-                <h2 class="text-center mb-2">🛒 Shopping Cart</h2>
+                <h2 class="text-center mb-4"><i class="fas fa-shopping-cart"></i> Shopping Cart</h2>
                 <div id="cartItems"></div>
-                <div id="cartTotal" class="text-center mt-2"></div>
-                <div class="text-center mt-2 flex justify-center gap-2">
+                <div id="cartTotal" class="text-center mt-4"></div>
+                <div class="text-center mt-4 flex justify-center gap-3">
                     <button class="btn-success" onclick="navigateTo('/checkout')">
-                        💳 Proceed to Checkout
+                        <i class="fas fa-credit-card"></i> Proceed to Checkout
                     </button>
                     <button class="btn-danger" onclick="clearCart()">
-                        🗑️ Clear Cart
+                        <i class="fas fa-trash"></i> Clear Cart
                     </button>
                 </div>
             </div>
 
             <!-- Checkout Page -->
             <div id="checkoutPage" class="form-container hidden">
-                <h2 class="text-center">💳 Checkout</h2>
-                <div id="checkoutSummary" class="mb-2"></div>
+                <h2 class="text-center"><i class="fas fa-credit-card"></i> Checkout</h2>
+                <div id="checkoutSummary" class="mb-4"></div>
                 <form id="checkoutForm">
                     <div class="form-group">
-                        <label>🏠 Shipping Address:</label>
+                        <label><i class="fas fa-home"></i> Shipping Address:</label>
                         <textarea id="shippingAddress" rows="3" required placeholder="Enter your complete shipping address"></textarea>
                     </div>
-                    <button type="submit" class="btn-success w-full">✅ Place Order</button>
+                    <button type="submit" class="btn-success w-full">
+                        <i class="fas fa-check-circle"></i> Place Order
+                    </button>
                 </form>
-                <div class="text-center mt-2">
-                    <button class="btn-secondary" onclick="navigateTo('/cart')">← Back to Cart</button>
+                <div class="text-center mt-3">
+                    <button class="btn-secondary" onclick="navigateTo('/cart')">
+                        <i class="fas fa-arrow-left"></i> Back to Cart
+                    </button>
                 </div>
                 <div id="checkoutMessage"></div>
             </div>
 
             <!-- Orders Page -->
             <div id="ordersPage" class="hidden">
-                <h2 class="text-center mb-2">📦 My Orders</h2>
+                <h2 class="text-center mb-4"><i class="fas fa-clipboard-list"></i> My Orders</h2>
                 <div id="ordersLoading" class="spinner"></div>
                 <div id="ordersList"></div>
             </div>
@@ -1074,20 +1415,47 @@
     </main>
 
     <!-- Back to Top Button -->
-    <a href="#" class="back-to-top" onclick="scrollToTop(); return false;">↑</a>
+    <a href="#" class="back-to-top" onclick="scrollToTop(); return false;">
+        <i class="fas fa-chevron-up"></i>
+    </a>
 
-    <!-- Footer -->
+    <!-- Premium Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div>
-                    <h3>E-Store</h3>
-                    <p>Your trusted online shopping destination</p>
+                    <div class="logo">
+                        <i class="fas fa-gem logo-icon"></i>
+                        NexusStore
+                    </div>
+                    <p>Your premium shopping destination</p>
                 </div>
-                <div>
-                    <p>&copy; 2024 E-Store. All rights reserved.</p>
-                    <p>Built with ❤️ for modern e-commerce</p>
+                <div class="footer-links">
+                    <div>
+                        <h3>Shop</h3>
+                        <a href="#" onclick="navigateTo('/products'); return false;">All Products</a>
+                        <a href="#" onclick="navigateTo('/categories'); return false;">Categories</a>
+                        <a href="#">Featured</a>
+                        <a href="#">New Arrivals</a>
+                    </div>
+                    <div>
+                        <h3>Support</h3>
+                        <a href="#">Contact Us</a>
+                        <a href="#">Shipping Info</a>
+                        <a href="#">Returns</a>
+                        <a href="#">FAQ</a>
+                    </div>
+                    <div>
+                        <h3>Company</h3>
+                        <a href="#">About Us</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                    </div>
                 </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 NexusStore. All rights reserved. | Built with <i class="fas fa-heart" style="color: #ef4444;"></i> for premium e-commerce</p>
             </div>
         </div>
     </footer>
@@ -1115,6 +1483,16 @@
             minPrice: '',
             maxPrice: '',
             sort: ''
+        };
+
+        // FIXED: Global state with proper initialization
+        let paginationState = {
+            currentPage: 1,
+            pageSize: 15, // Default value
+            totalPages: 1,
+            totalCount: 0,
+            hasNext: false,
+            hasPrevious: false
         };
 
         // NEW: Global Search Functionality
@@ -1173,6 +1551,8 @@
                 maxPrice: document.getElementById('maxPrice').value,
                 sort: document.getElementById('sortOption').value
             };
+            // Reset to first page when filters change
+            paginationState.currentPage = 1;
             loadProductsWithFilters();
         }
 
@@ -1189,9 +1569,22 @@
                 maxPrice: '',
                 sort: ''
             };
+            // Reset to first page when filters are cleared
+            paginationState.currentPage = 1;
             loadProductsWithFilters();
         }
 
+        // FIXED: changePageSize function
+        function changePageSize(newSize) {
+            const size = parseInt(newSize);
+            if (!isNaN(size) && size > 0) {
+                paginationState.pageSize = size;
+                paginationState.currentPage = 1; // Reset to first page when changing page size
+                loadProductsWithFilters();
+            }
+        }
+
+        // FIXED: Enhanced loadProductsWithFilters function
         async function loadProductsWithFilters() {
             const loadingElement = document.getElementById('productsLoading');
             const gridElement = document.getElementById('productsGrid');
@@ -1210,19 +1603,69 @@
                 if (currentFilters.minPrice) params.append('min_price', currentFilters.minPrice);
                 if (currentFilters.maxPrice) params.append('max_price', currentFilters.maxPrice);
                 if (currentFilters.sort) params.append('sort', currentFilters.sort);
+                
+                // FIXED: Ensure page and page_size are valid numbers
+                const page = Math.max(1, parseInt(paginationState.currentPage) || 1);
+                const pageSize = Math.max(1, parseInt(paginationState.pageSize) || 15);
+                
+                params.append('page', page);
+                params.append('page_size', pageSize);
 
                 const url = `${PRODUCTS_API}/?${params.toString()}`;
+                console.log('📡 API Request:', url);
+                
                 const response = await fetch(url);
                 
                 if (response.ok) {
-                    products = await response.json();
+                    const data = await response.json();
+                    console.log('📦 API Response:', data);
+                    
+                    // Check if response has pagination structure
+                    if (data.results !== undefined) {
+                        // New paginated response format
+                        products = data.results || [];
+                        paginationState = {
+                            currentPage: data.current_page || 1,
+                            pageSize: data.page_size || pageSize,
+                            totalPages: data.total_pages || 1,
+                            totalCount: data.total_count || products.length,
+                            hasNext: data.has_next || false,
+                            hasPrevious: data.has_previous || false
+                        };
+                    } else if (Array.isArray(data)) {
+                        // Fallback to non-paginated response (array)
+                        products = data;
+                        paginationState = {
+                            currentPage: 1,
+                            pageSize: products.length,
+                            totalPages: 1,
+                            totalCount: products.length,
+                            hasNext: false,
+                            hasPrevious: false
+                        };
+                    } else {
+                        // Handle unexpected response format
+                        console.error('❌ Unexpected API response format:', data);
+                        products = [];
+                        paginationState = {
+                            currentPage: 1,
+                            pageSize: pageSize,
+                            totalPages: 1,
+                            totalCount: 0,
+                            hasNext: false,
+                            hasPrevious: false
+                        };
+                    }
                     
                     // Display results info
                     if (Object.keys(currentFilters).some(key => currentFilters[key])) {
                         let filterText = [];
                         if (currentFilters.search) filterText.push(`Search: "${currentFilters.search}"`);
                         if (currentFilters.category) {
-                            const categoryName = document.getElementById('categoryFilter').options[document.getElementById('categoryFilter').selectedIndex].text;
+                            const categorySelect = document.getElementById('categoryFilter');
+                            const categoryName = categorySelect ? 
+                                categorySelect.options[categorySelect.selectedIndex]?.text : 
+                                currentFilters.category;
                             filterText.push(`Category: ${categoryName}`);
                         }
                         if (currentFilters.minPrice || currentFilters.maxPrice) {
@@ -1232,26 +1675,137 @@
                             filterText.push(`Price: ${priceRange.join(' ')}`);
                         }
                         if (currentFilters.sort) {
-                            const sortText = document.getElementById('sortOption').options[document.getElementById('sortOption').selectedIndex].text;
+                            const sortSelect = document.getElementById('sortOption');
+                            const sortText = sortSelect ? 
+                                sortSelect.options[sortSelect.selectedIndex]?.text : 
+                                currentFilters.sort;
                             filterText.push(`Sorted by: ${sortText}`);
                         }
                         
                         resultsInfo.innerHTML = `
-                            <strong>${products.length} products found</strong>
+                            <strong>${paginationState.totalCount} products found</strong>
                             ${filterText.length ? `<br><small>${filterText.join(' • ')}</small>` : ''}
                         `;
                         resultsInfo.classList.remove('hidden');
                     }
                     
                     displayProducts(products);
+                    renderPaginationControls();
                 } else {
-                    throw new Error('Failed to load products');
+                    const errorText = await response.text();
+                    console.error('❌ API Error Response:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
                 }
             } catch (error) {
-                gridElement.innerHTML = `<div class="error">❌ Error loading products: ${error.message}</div>`;
+                console.error('❌ Error loading products:', error);
+                gridElement.innerHTML = `
+                    <div class="error w-full text-center">
+                        <h3>❌ Error loading products</h3>
+                        <p>${error.message}</p>
+                        <button class="btn-secondary mt-2" onclick="loadProducts()">Try Again</button>
+                    </div>
+                `;
+                // Hide pagination on error
+                document.getElementById('paginationContainer').classList.add('hidden');
             } finally {
                 loadingElement.classList.add('hidden');
             }
+        }
+
+        // FIXED: goToPage function
+        function goToPage(pageNumber) {
+            const page = parseInt(pageNumber);
+            if (!isNaN(page) && page >= 1 && page <= paginationState.totalPages) {
+                paginationState.currentPage = page;
+                loadProductsWithFilters();
+                // Scroll to top when changing pages
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // NEW: Pagination Functions
+        function renderPaginationControls() {
+            const paginationContainer = document.getElementById('paginationContainer');
+            const paginationInfo = document.getElementById('paginationInfo');
+            const paginationControls = document.getElementById('paginationControls');
+            
+            if (paginationState.totalPages <= 1) {
+                paginationContainer.classList.add('hidden');
+                return;
+            }
+            
+            paginationContainer.classList.remove('hidden');
+            
+            // Update pagination info
+            const startItem = ((paginationState.currentPage - 1) * paginationState.pageSize) + 1;
+            const endItem = Math.min(paginationState.currentPage * paginationState.pageSize, paginationState.totalCount);
+            paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${paginationState.totalCount} products`;
+            
+            // Update page size selector
+            document.getElementById('pageSizeSelect').value = paginationState.pageSize;
+            
+            // Build pagination buttons
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <button class="pagination-btn" ${!paginationState.hasPrevious ? 'disabled' : ''} 
+                        onclick="goToPage(${paginationState.currentPage - 1})">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+            `;
+            
+            // Page numbers
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, paginationState.currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(paginationState.totalPages, startPage + maxVisiblePages - 1);
+            
+            // Adjust if we're near the end
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            // First page and ellipsis if needed
+            if (startPage > 1) {
+                paginationHTML += `
+                    <button class="pagination-btn" onclick="goToPage(1)">1</button>
+                `;
+                if (startPage > 2) {
+                    paginationHTML += `<span class="pagination-btn" style="border: none; cursor: default;">...</span>`;
+                }
+            }
+            
+            // Page numbers
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <button class="pagination-btn ${i === paginationState.currentPage ? 'active' : ''}" 
+                            onclick="goToPage(${i})">
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            // Last page and ellipsis if needed
+            if (endPage < paginationState.totalPages) {
+                if (endPage < paginationState.totalPages - 1) {
+                    paginationHTML += `<span class="pagination-btn" style="border: none; cursor: default;">...</span>`;
+                }
+                paginationHTML += `
+                    <button class="pagination-btn" onclick="goToPage(${paginationState.totalPages})">
+                        ${paginationState.totalPages}
+                    </button>
+                `;
+            }
+            
+            // Next button
+            paginationHTML += `
+                <button class="pagination-btn" ${!paginationState.hasNext ? 'disabled' : ''} 
+                        onclick="goToPage(${paginationState.currentPage + 1})">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            
+            paginationControls.innerHTML = paginationHTML;
         }
 
         // UPDATED: Product Functions with Filter Support
@@ -1261,9 +1815,6 @@
             // Load products with current filters
             await loadProductsWithFilters();
         }
-
-        // REST OF YOUR EXISTING JAVASCRIPT CODE REMAINS EXACTLY THE SAME
-        // Only the product loading part is enhanced with filters
 
         // URL Routing System
         function navigateTo(path) {
@@ -1481,36 +2032,40 @@
                 if (response.ok) {
                     const userData = await response.json();
                     document.getElementById('profileData').innerHTML = `
-                        <div class="form-group">
-                            <label>📧 Email:</label>
-                            <input type="email" value="${userData.email}" readonly>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label><i class="fas fa-envelope"></i> Email:</label>
+                                <input type="email" value="${userData.email}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Username:</label>
+                                <input type="text" value="${userData.username}" readonly>
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> First Name:</label>
+                                <input type="text" value="${userData.first_name}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Last Name:</label>
+                                <input type="text" value="${userData.last_name}" readonly>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label>👤 Username:</label>
-                            <input type="text" value="${userData.username}" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>📛 First Name:</label>
-                            <input type="text" value="${userData.first_name}" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>📛 Last Name:</label>
-                            <input type="text" value="${userData.last_name}" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>📞 Phone:</label>
+                            <label><i class="fas fa-phone"></i> Phone:</label>
                             <input type="text" value="${userData.phone_number || 'Not provided'}" readonly>
                         </div>
                         <div class="form-group">
-                            <label>🎂 Date of Birth:</label>
+                            <label><i class="fas fa-birthday-cake"></i> Date of Birth:</label>
                             <input type="text" value="${userData.date_of_birth || 'Not provided'}" readonly>
                         </div>
                         <div class="form-group">
-                            <label>🏠 Address:</label>
+                            <label><i class="fas fa-home"></i> Address:</label>
                             <textarea rows="3" readonly>${userData.address || 'Not provided'}</textarea>
                         </div>
                         <div class="form-group">
-                            <label>📅 Age:</label>
+                            <label><i class="fas fa-calendar-alt"></i> Age:</label>
                             <input type="text" value="${userData.age || 'Not available'}" readonly>
                         </div>
                     `;
@@ -1572,10 +2127,14 @@
                     <div class="product-info">
                         <div class="product-name">${product.name}</div>
                         <div class="product-price">$${product.price}</div>
-                        <div class="product-category">${product.category_name}</div>
+                        <div class="product-category"><i class="fas fa-tag"></i> ${product.category_name}</div>
                         <div class="product-actions">
-                            <button class="btn-primary" onclick="addToCart(${product.id})">Add to Cart</button>
-                            <button class="btn-secondary" onclick="navigateTo('/product/${product.id}')">View</button>
+                            <button class="btn-primary" onclick="addToCart(${product.id})">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn-secondary" onclick="navigateTo('/product/${product.id}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1603,10 +2162,14 @@
                     <div class="product-info">
                         <div class="product-name">${product.name}</div>
                         <div class="product-price">$${product.price}</div>
-                        <div class="product-category">${product.category_name}</div>
+                        <div class="product-category"><i class="fas fa-tag"></i> ${product.category_name}</div>
                         <div class="product-actions">
-                            <button class="btn-primary" onclick="addToCart(${product.id})">Add to Cart</button>
-                            <button class="btn-secondary" onclick="navigateTo('/product/${product.id}')">View Details</button>
+                            <button class="btn-primary" onclick="addToCart(${product.id})">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn-secondary" onclick="navigateTo('/product/${product.id}')">
+                                <i class="fas fa-eye"></i> Details
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1634,12 +2197,16 @@
                     <div class="product-info">
                         <h2>${product.name}</h2>
                         <div class="product-price">$${product.price}</div>
-                        <p><strong>Category:</strong> ${product.category.name}</p>
-                        <p><strong>Description:</strong> ${product.description}</p>
-                        <p><strong>Stock:</strong> ${product.stock_quantity} available</p>
-                        <div class="flex gap-2 mt-2">
-                            <button class="btn-primary" onclick="addToCart(${product.id})">Add to Cart</button>
-                            <button class="btn-secondary" onclick="navigateTo('/products')">Back to Products</button>
+                        <p><strong><i class="fas fa-tag"></i> Category:</strong> ${product.category.name}</p>
+                        <p><strong><i class="fas fa-align-left"></i> Description:</strong> ${product.description}</p>
+                        <p><strong><i class="fas fa-box"></i> Stock:</strong> ${product.stock_quantity} available</p>
+                        <div class="flex gap-3 mt-4">
+                            <button class="btn-primary" onclick="addToCart(${product.id})">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn-secondary" onclick="navigateTo('/products')">
+                                <i class="fas fa-arrow-left"></i> Back to Products
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1677,9 +2244,11 @@
             listElement.innerHTML = categories.map(category => `
                 <div class="product-card">
                     <div class="product-info">
-                        <h3>${category.name}</h3>
+                        <h3><i class="fas fa-tags"></i> ${category.name}</h3>
                         <p class="product-category">${category.description || 'No description available'}</p>
-                        <button class="btn-secondary" onclick="navigateTo('/products')">View Products</button>
+                        <button class="btn-secondary" onclick="navigateTo('/products')">
+                            <i class="fas fa-eye"></i> View Products
+                        </button>
                     </div>
                 </div>
             `).join('');
@@ -1719,7 +2288,7 @@
             const cartTotalElement = document.getElementById('cartTotal');
 
             if (!cart || cart.items.length === 0) {
-                cartItemsElement.innerHTML = '<div class="info">🛒 Your cart is empty</div>';
+                cartItemsElement.innerHTML = '<div class="info"><i class="fas fa-shopping-cart"></i> Your cart is empty</div>';
                 cartTotalElement.innerHTML = '';
                 return;
             }
@@ -1727,21 +2296,23 @@
             cartItemsElement.innerHTML = cart.items.map(item => `
                 <div class="cart-item">
                     <h4>${item.product_name}</h4>
-                    <p>💰 Price: $${item.product_price}</p>
+                    <p><i class="fas fa-dollar-sign"></i> Price: $${item.product_price}</p>
                     <div class="quantity-controls">
                         <button class="btn-secondary quantity-btn" onclick="updateCartItem(${item.id}, ${item.quantity - 1})">-</button>
                         <span class="quantity-display">${item.quantity}</span>
                         <button class="btn-secondary quantity-btn" onclick="updateCartItem(${item.id}, ${item.quantity + 1})">+</button>
                     </div>
-                    <p>💵 Total: $${item.item_total}</p>
-                    <button class="btn-danger" onclick="removeCartItem(${item.id})">🗑️ Remove</button>
+                    <p><i class="fas fa-receipt"></i> Total: $${item.item_total}</p>
+                    <button class="btn-danger" onclick="removeCartItem(${item.id})">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
                 </div>
             `).join('');
 
             cartTotalElement.innerHTML = `
                 <div class="success">
-                    <h3>💰 Cart Total: $${cart.cart_total}</h3>
-                    <p>📦 Total Items: ${cart.total_items}</p>
+                    <h3><i class="fas fa-receipt"></i> Cart Total: $${cart.cart_total}</h3>
+                    <p><i class="fas fa-box"></i> Total Items: ${cart.total_items}</p>
                 </div>
             `;
         }
@@ -1847,7 +2418,7 @@
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
-                });
+                    });
 
                 if (response.ok) {
                     await loadCart();
@@ -1864,13 +2435,13 @@
         function loadCheckoutSummary() {
             const summaryElement = document.getElementById('checkoutSummary');
             if (!cart || cart.items.length === 0) {
-                summaryElement.innerHTML = '<div class="warning">🛒 Your cart is empty</div>';
+                summaryElement.innerHTML = '<div class="warning"><i class="fas fa-shopping-cart"></i> Your cart is empty</div>';
                 return;
             }
 
             summaryElement.innerHTML = `
                 <div class="info">
-                    <h4>📦 Order Summary</h4>
+                    <h4><i class="fas fa-clipboard-list"></i> Order Summary</h4>
                     <p>Total Items: ${cart.total_items}</p>
                     <p>Total Amount: $${cart.cart_total}</p>
                 </div>
@@ -1953,25 +2524,33 @@
             const ordersListElement = document.getElementById('ordersList');
             
             if (orders.length === 0) {
-                ordersListElement.innerHTML = '<div class="info">📭 No orders found</div>';
+                ordersListElement.innerHTML = '<div class="info"><i class="fas fa-clipboard-list"></i> No orders found</div>';
                 return;
             }
 
             ordersListElement.innerHTML = orders.map(order => `
                 <div class="order-item">
-                    <h4>📦 Order #${order.order_number}</h4>
+                    <h4><i class="fas fa-box"></i> Order #${order.order_number}</h4>
                     <p><strong>Status:</strong> <span class="status-badge status-${order.status}">${order.status}</span></p>
                     <p><strong>Total:</strong> $${order.total_amount}</p>
                     <p><strong>Date:</strong> ${new Date(order.created_at).toLocaleDateString()}</p>
                     <p><strong>Items:</strong> ${order.total_items}</p>
                     <div class="order-actions">
-                        <button class="btn-secondary" onclick="navigateTo('/order/${order.id}')">📋 View Details</button>
+                        <button class="btn-secondary" onclick="navigateTo('/order/${order.id}')">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
                         ${order.status === 'delivered' ? `
-                            <button class="btn-warning" onclick="requestRefund(${order.id})">💰 Request Refund</button>
-                            <button class="btn-info" onclick="showReviewForm(${order.id})">⭐ Write Review</button>
+                            <button class="btn-warning" onclick="requestRefund(${order.id})">
+                                <i class="fas fa-money-bill-wave"></i> Request Refund
+                            </button>
+                            <button class="btn-info" onclick="showReviewForm(${order.id})">
+                                <i class="fas fa-star"></i> Write Review
+                            </button>
                         ` : ''}
                         ${order.status === 'pending' ? `
-                            <button class="btn-danger" onclick="cancelOrder(${order.id})">❌ Cancel Order</button>
+                            <button class="btn-danger" onclick="cancelOrder(${order.id})">
+                                <i class="fas fa-times"></i> Cancel Order
+                            </button>
                         ` : ''}
                     </div>
                 </div>
@@ -2005,26 +2584,26 @@
         function displayOrderDetail(order) {
             document.getElementById('orderDetailContent').innerHTML = `
                 <div class="order-details">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2>📋 Order #${order.order_number}</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2><i class="fas fa-clipboard-list"></i> Order #${order.order_number}</h2>
                         <span class="status-badge status-${order.status}">${order.status}</span>
                     </div>
                     
                     <div class="grid-2">
                         <div>
-                            <h4>📦 Order Information</h4>
+                            <h4><i class="fas fa-info-circle"></i> Order Information</h4>
                             <p><strong>Order Date:</strong> ${new Date(order.created_at).toLocaleString()}</p>
                             <p><strong>Total Amount:</strong> $${order.total_amount}</p>
                             <p><strong>Total Items:</strong> ${order.total_items}</p>
                         </div>
                         <div>
-                            <h4>🏠 Shipping Address</h4>
+                            <h4><i class="fas fa-home"></i> Shipping Address</h4>
                             <p>${order.shipping_address}</p>
                         </div>
                     </div>
 
                     <div class="order-items">
-                        <h4>🛍️ Order Items</h4>
+                        <h4><i class="fas fa-boxes"></i> Order Items</h4>
                         ${order.items ? order.items.map(item => `
                             <div class="order-item-detail">
                                 <div>
@@ -2040,13 +2619,21 @@
                     </div>
 
                     <div class="order-actions">
-                        <button class="btn-secondary" onclick="navigateTo('/orders')">← Back to Orders</button>
+                        <button class="btn-secondary" onclick="navigateTo('/orders')">
+                            <i class="fas fa-arrow-left"></i> Back to Orders
+                        </button>
                         ${order.status === 'delivered' ? `
-                            <button class="btn-warning" onclick="requestRefund(${order.id})">💰 Request Refund</button>
-                            <button class="btn-info" onclick="showReviewForm(${order.id})">⭐ Write Review</button>
+                            <button class="btn-warning" onclick="requestRefund(${order.id})">
+                                <i class="fas fa-money-bill-wave"></i> Request Refund
+                            </button>
+                            <button class="btn-info" onclick="showReviewForm(${order.id})">
+                                <i class="fas fa-star"></i> Write Review
+                            </button>
                         ` : ''}
                         ${order.status === 'pending' ? `
-                            <button class="btn-danger" onclick="cancelOrder(${order.id})">❌ Cancel Order</button>
+                            <button class="btn-danger" onclick="cancelOrder(${order.id})">
+                                <i class="fas fa-times"></i> Cancel Order
+                            </button>
                         ` : ''}
                     </div>
                 </div>
@@ -2054,7 +2641,7 @@
                 ${order.status === 'delivered' ? `
                     <div id="reviewSection" class="hidden">
                         <div class="review-form">
-                            <h4>⭐ Write a Review</h4>
+                            <h4><i class="fas fa-star"></i> Write a Review</h4>
                             <div class="rating-stars">
                                 ${[1,2,3,4,5].map(star => `
                                     <span class="star" onclick="setRating(${star})">★</span>
@@ -2127,7 +2714,7 @@
             }
         }
 
-        // Review Functions - UPDATED VERSION
+        // Review Functions
         let currentRating = 0;
 
         function showReviewForm(orderId) {
