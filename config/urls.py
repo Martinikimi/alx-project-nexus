@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +27,13 @@ urlpatterns = [
     path('api/orders/', include('orders.urls')),
     path('api/reviews/', include('reviews.urls')),
     path('api/payments/', include('payments.urls')), 
+    
+    # Serve index.html for ALL frontend routes
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('login/', TemplateView.as_view(template_name='index.html'), name='login'),
+    path('register/', TemplateView.as_view(template_name='index.html'), name='register'),
+    path('profile/', TemplateView.as_view(template_name='index.html'), name='profile'),
+    
+    # Catch-all for any other frontend routes
+    path('<path:unknown_path>/', TemplateView.as_view(template_name='index.html')),
 ]

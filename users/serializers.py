@@ -12,7 +12,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User  
-        fields = ['email', 'username', 'password', 'password_confirm', 'first_name', 'last_name', 'phone_number']
+        fields = ['email', 'username', 'password', 'password_confirm', 'first_name', 'last_name', 'phone_number', 'date_of_birth']
     
     def validate(self, data):
         if data['password'] != data['password_confirm']:

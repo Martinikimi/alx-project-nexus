@@ -2,7 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from django.db import models
 from .models import Category
-from .serializers import (CategoryListSerializer, CategoryDetailSerializer, CategoryCreateSerializer)
+from .serializers import (CategoryListSerializer, CategoryDetailSerializer, CategoryCreateSerializer, CategoryAdminSerializer)
 
 
 class CategoryListView(generics.ListAPIView):
@@ -21,7 +21,7 @@ class CategoryListView(generics.ListAPIView):
 
 class CategoryDetailView(generics.RetrieveAPIView):
     """
-    Get  category details
+    Get category details
     - Public access with no authentication required
     - Shows category with nested subcategories
     """
@@ -69,14 +69,14 @@ class CategoryDeleteView(generics.DestroyAPIView):
         instance.save()
 
 
-# Admin-only view to see ALL categories including the inactive
 class CategoryAdminListView(generics.ListAPIView):
     """
-    List ALL categories (
+    List ALL categories with complete hierarchy
     - Only admin users can access
-    - Shows complete category list for management
+    - Shows complete category tree including inactive categories
     """
-    serializer_class = CategoryListSerializer
+    serializer_class = CategoryAdminSerializer
     permission_classes = [permissions.IsAdminUser]
-    queryset = Category.objects.all()
     
+    def get_queryset(self):
+        return Category.objects.filter(parent__isnull=True)

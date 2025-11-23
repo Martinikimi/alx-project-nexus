@@ -5,6 +5,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserProfileSerializer
+from django.shortcuts import render
+
+def auth_page(request):
+    return render(request, 'users/auth.html')
+
 
 class RegisterView(APIView):
     """
