@@ -8,22 +8,81 @@ from categories.models import Category
 
 class ProductSearchView(generics.ListAPIView):
     """
-    Enhanced product search with price filtering
+    Enhanced product search with helpful 'no results' messages
     - Public access (no login required)
     - Searches in product names and descriptions
     - Optional price range filtering
-    - Examples:
-    /api/products/search/?q=shoes&min_price=50&max_price=100
-    /api/products/search/?min_price=100
-    /api/products/search/?max_price=50
+    - Optional category filtering
+    - Helpful messages when no results found
     """
     serializer_class = ProductListSerializer
     permission_classes = [permissions.AllowAny]
     
+    def list(self, request, *args, **kwargs):
+        """
+        Override the list method to add custom messages when no results found
+        """
+        # Get the original response
+        response = super().list(request, *args, **kwargs)
+        
+        # Get search query for our custom message
+        search_query = self.request.query_params.get('q', '').strip()
+        has_other_filters = any([
+            self.request.query_params.get('min_price'),
+            self.request.query_params.get('max_price'), 
+            self.request.query_params.get('category')
+        ])
+        
+        # Add custom message if no results found
+        if len(response.data) == 0:
+            if search_query:
+                response.data = {
+                    'message': f'There are no results for "{search_query}".',
+                    'suggestions': [
+                        'Check your spelling for typing errors',
+                        'Try searching with short and simple keywords'
+                    ],
+                    'search_performed': True,
+                    'results_count': 0,
+                    'products': []
+                }
+            elif has_other_filters:
+                response.data = {
+                    'message': 'No products match your filters.',
+                    'suggestions': [
+                        'Try adjusting your price range',
+                        'Try a different category',
+                        'Remove some filters to see more products'
+                    ],
+                    'search_performed': True,
+                    'results_count': 0,
+                    'products': []
+                }
+            else:
+                # No search and no filters - just empty products
+                response.data = {
+                    'search_performed': False,
+                    'results_count': 0,
+                    'products': []
+                }
+        else:
+            # Results found - add metadata
+            response.data = {
+                'search_performed': bool(search_query or has_other_filters),
+                'results_count': len(response.data),
+                'products': response.data
+            }
+            if search_query:
+                response.data['search_query'] = search_query
+        
+        return response
+    
     def get_queryset(self):
+        # Get search parameters from URL
         search_query = self.request.query_params.get('q', '')
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
+        category_id = self.request.query_params.get('category')
         
         # Start with all active products
         queryset = Product.objects.filter(is_active=True)
@@ -35,15 +94,15 @@ class ProductSearchView(generics.ListAPIView):
                 Q(description__icontains=search_query)
             )
         
-        #  minimum price filter
+        # Apply minimum price filter
         if min_price:
             try:
                 min_price = float(min_price)
                 queryset = queryset.filter(price__gte=min_price)
             except (ValueError, TypeError):
                 pass
-            
-        # maximum price filter
+        
+        # Apply maximum price filter
         if max_price:
             try:
                 max_price = float(max_price)
@@ -51,8 +110,15 @@ class ProductSearchView(generics.ListAPIView):
             except (ValueError, TypeError):
                 pass
         
+        # Apply category filter
+        if category_id:
+            try:
+                category_id = int(category_id)
+                queryset = queryset.filter(category_id=category_id)
+            except (ValueError, TypeError):
+                pass
+        
         return queryset.select_related('category')
-
 
 class ProductListView(generics.ListAPIView):
     """
@@ -66,7 +132,6 @@ class ProductListView(generics.ListAPIView):
 
 
     def get_queryset(self):
-        # Return active products only
         return Product.objects.filter(is_active=True).select_related('category')
 
 class ProductDetailView(generics.RetrieveAPIView):
