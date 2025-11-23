@@ -8,28 +8,50 @@ from categories.models import Category
 
 class ProductSearchView(generics.ListAPIView):
     """
-    Basic product search
+    Enhanced product search with price filtering
     - Public access (no login required)
     - Searches in product names and descriptions
-    - Example: /api/products/search/?q=running+shoes
+    - Optional price range filtering
+    - Examples:
+    /api/products/search/?q=shoes&min_price=50&max_price=100
+    /api/products/search/?min_price=100
+    /api/products/search/?max_price=50
     """
     serializer_class = ProductListSerializer
     permission_classes = [permissions.AllowAny]
     
     def get_queryset(self):
         search_query = self.request.query_params.get('q', '')
+        min_price = self.request.query_params.get('min_price')
+        max_price = self.request.query_params.get('max_price')
         
+        # Start with all active products
+        queryset = Product.objects.filter(is_active=True)
+        
+        # Apply search filter if provided
         if search_query:
-            # Search both name and description
-            return Product.objects.filter(
+            queryset = queryset.filter(
                 Q(name__icontains=search_query) | 
-                Q(description__icontains=search_query),
-                is_active=True
-            ).select_related('category')
-        else:
-            # If no search query, return all active products
-            return Product.objects.filter(is_active=True).select_related('category')
-
+                Q(description__icontains=search_query)
+            )
+        
+        #  minimum price filter
+        if min_price:
+            try:
+                min_price = float(min_price)
+                queryset = queryset.filter(price__gte=min_price)
+            except (ValueError, TypeError):
+                pass
+            
+        # maximum price filter
+        if max_price:
+            try:
+                max_price = float(max_price)
+                queryset = queryset.filter(price__lte=max_price)
+            except (ValueError, TypeError):
+                pass
+        
+        return queryset.select_related('category')
 
 
 class ProductListView(generics.ListAPIView):
