@@ -13,6 +13,7 @@ class ProductSearchView(generics.ListAPIView):
     - Searches in product names and descriptions
     - Optional price range filtering
     - Optional category filtering
+    - Optional sorting
     - Helpful messages when no results found
     """
     serializer_class = ProductListSerializer
@@ -22,18 +23,19 @@ class ProductSearchView(generics.ListAPIView):
         """
         Override the list method to add custom messages when no results found
         """
-        # Get the original response
+        # Get original response
         response = super().list(request, *args, **kwargs)
         
-        # earch query for custom message
+        # Search query for custom message
         search_query = self.request.query_params.get('q', '').strip()
         has_other_filters = any([
             self.request.query_params.get('min_price'),
             self.request.query_params.get('max_price'), 
-            self.request.query_params.get('category')
+            self.request.query_params.get('category'),
+            self.request.query_params.get('sort')
         ])
         
-        # custom message if no results found
+        # Custom message if no results found
         if len(response.data) == 0:
             if search_query:
                 response.data = {
@@ -78,11 +80,95 @@ class ProductSearchView(generics.ListAPIView):
         return response
     
     def get_queryset(self):
-        # search parameters from URL
+        # Search parameters from URL
         search_query = self.request.query_params.get('q', '')
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
         category_id = self.request.query_params.get('category')
+        sort_option = self.request.query_params.get('sort', '')
+        
+        # Start with active products
+        queryset = Product.objects.filter(is_active=True)
+        
+        # Apply search filter if provided
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) | 
+                Q(description__icontains=search_query)
+            )
+        
+        # minimum price filter
+        if min_price:
+            try:
+                min_price = float(min_price)
+                queryset = queryset.filter(price__gte=min_price)
+            except (ValueError, TypeError):
+                pass
+        
+        # maximum price filter
+        if max_price:
+            try:
+                max_price = float(max_price)
+                queryset = queryset.filter(price__lte=max_price)
+            except (ValueError, TypeError):
+                pass
+        
+        # category filter
+        if category_id:
+            try:
+                category_id = int(category_id)
+                queryset = queryset.filter(category_id=category_id)
+            except (ValueError, TypeError):
+                pass
+        
+        # sorting
+        queryset = self.apply_sorting(queryset, sort_option)
+        
+        return queryset.select_related('category')
+    
+    def apply_sorting(self, queryset, sort_option):
+        """
+        Apply sorting based on the sort parameter
+        """
+        sort_mappings = {
+            'price_asc': 'price',           # Price low to high
+            'price_desc': '-price',         # Price high to low
+            'date_desc': '-created_at',     # Newest first
+            'date_asc': 'created_at',       # Oldest first
+            'name_asc': 'name',             # Name A-Z
+            'name_desc': '-name',           # Name Z-A
+        }
+        
+        if sort_option in sort_mappings:
+            return queryset.order_by(sort_mappings[sort_option])
+        
+        # Default sorting 
+        return queryset.order_by('-created_at')
+
+class ProductListView(generics.ListAPIView):
+    """
+    Enhanced product list with search, filtering, and sorting
+    - Public access (no login required)
+    - Only shows active products
+    - Supports search, price filtering, category filtering, and sorting
+    - Examples:
+    /api/products/                           
+    /api/products/?q=shoes                   
+    /api/products/?min_price=50&max_price=100 
+    /api/products/?category=3                
+    /api/products/?sort=price_asc            
+    /api/products/?q=phone&sort=rating_desc  
+    """
+    serializer_class = ProductListSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        # Get search, filter, and sort parameters from URL
+        search_query = self.request.query_params.get('q', '')
+        min_price = self.request.query_params.get('min_price')
+        max_price = self.request.query_params.get('max_price')
+        category_id = self.request.query_params.get('category')
+        sort_option = self.request.query_params.get('sort', '')
         
         # Start with all active products
         queryset = Product.objects.filter(is_active=True)
@@ -118,67 +204,29 @@ class ProductSearchView(generics.ListAPIView):
             except (ValueError, TypeError):
                 pass
         
-        return queryset.select_related('category')
-
-class ProductListView(generics.ListAPIView):
-    """
-    Enhanced product list with search and filtering 
-    - Public access (no login required)
-    - Only shows active products
-    - Now supports search, price filtering, and category filtering
-    - Examples:
-    /api/products/                           → All active products
-    /api/products/?q=shoes                   → Search for shoes
-    /api/products/?min_price=50&max_price=100 → Products between $50-$100
-    /api/products/?category=3                → Products in category #3
-    /api/products/?q=phone&category=2&min_price=500 → Combined search
-    """
-    serializer_class = ProductListSerializer
-    permission_classes = [permissions.AllowAny]
-
-    def get_queryset(self):
-        # Get search and filter parameters from URL
-        search_query = self.request.query_params.get('q', '')
-        min_price = self.request.query_params.get('min_price')
-        max_price = self.request.query_params.get('max_price')
-        category_id = self.request.query_params.get('category')
-        
-        # Start with all active products
-        queryset = Product.objects.filter(is_active=True)
-        
-        # Apply search filter if provided
-        if search_query:
-            queryset = queryset.filter(
-                Q(name__icontains=search_query) | 
-                Q(description__icontains=search_query)
-            )
-        
-        # minimum price filter
-        if min_price:
-            try:
-                min_price = float(min_price)
-                queryset = queryset.filter(price__gte=min_price)
-            except (ValueError, TypeError):
-            
-                pass
-        
-        # maximum price filter
-        if max_price:
-            try:
-                max_price = float(max_price)
-                queryset = queryset.filter(price__lte=max_price)
-            except (ValueError, TypeError):
-                pass
-        
-        # Apply category filter
-        if category_id:
-            try:
-                category_id = int(category_id)
-                queryset = queryset.filter(category_id=category_id)
-            except (ValueError, TypeError):
-                pass
+        # Apply sorting
+        queryset = self.apply_sorting(queryset, sort_option)
         
         return queryset.select_related('category')
+    
+    def apply_sorting(self, queryset, sort_option):
+        """
+        Apply sorting based on the sort parameter
+        """
+        sort_mappings = {
+            'price_asc': 'price',           # Price low to high
+            'price_desc': '-price',         # Price high to low
+            'date_desc': '-created_at',     # Newest first
+            'date_asc': 'created_at',       # Oldest first
+            'name_asc': 'name',             # Name A-Z
+            'name_desc': '-name',           # Name Z-A
+        }
+        
+        if sort_option in sort_mappings:
+            return queryset.order_by(sort_mappings[sort_option])
+        
+        # Default sorting (newest first)
+        return queryset.order_by('-created_at')
 
 class ProductDetailView(generics.RetrieveAPIView):
     """
