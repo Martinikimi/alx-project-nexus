@@ -15,7 +15,7 @@ A Django REST Framework e-commerce backend with JWT authentication, product mana
 - PostgreSQL
 - JWT Authentication
 
-## 🗃️ Database Design
+🗃️ Database Design
 ![ERD Diagram](/docs/erd.png)
 
 ## 📦 Installation
@@ -192,4 +192,9 @@ VACUUM ANALYZE products;
 -- Monitor unused indexes
 SELECT schemaname, tablename, indexname
 FROM pg_stat_user_indexes 
+
 WHERE idx_scan = 0;
+
+WHERE idx_scan = 0;
+📄 License
+
