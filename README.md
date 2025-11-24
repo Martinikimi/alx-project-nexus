@@ -193,4 +193,3 @@ VACUUM ANALYZE products;
 SELECT schemaname, tablename, indexname
 FROM pg_stat_user_indexes 
 WHERE idx_scan = 0;
-📄 License
