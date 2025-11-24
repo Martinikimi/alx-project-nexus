@@ -65,6 +65,9 @@ class ProductListView(generics.ListAPIView):
     serializer_class = ProductListSerializer
     permission_classes = [permissions.AllowAny]
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
     def list(self, request, *args, **kwargs):
         """
         Override list method to use custom pagination format
@@ -166,6 +169,9 @@ class ProductSearchView(generics.ListAPIView):
     """
     serializer_class = ProductListSerializer
     permission_classes = [permissions.AllowAny]
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
     
     def list(self, request, *args, **kwargs):
         """
@@ -297,6 +303,9 @@ class ProductDetailView(generics.RetrieveAPIView):
     serializer_class = ProductDetailSerializer
     permission_classes = [permissions.AllowAny]
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
     def get_queryset(self):
         # Return active products only
         return Product.objects.filter(is_active=True).select_related('category')
@@ -311,6 +320,9 @@ class CategoryProductsView(generics.ListAPIView):
     """
     serializer_class = ProductListSerializer
     permission_classes = [permissions.AllowAny]
+
+    def get_serializer_context(self):
+        return {'request': self.request}
 
     def list(self, request, *args, **kwargs):
         """
@@ -357,11 +369,14 @@ class FeaturedProductsView(generics.ListAPIView):
     serializer_class = ProductListSerializer
     permission_classes = [permissions.AllowAny]
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
     def get_queryset(self):
         return Product.objects.filter(
             is_featured=True,
             is_active=True
-        ).select_related('category').order_by('-created_at')[:8]  # Limit to 8 featured products
+        ).select_related('category').order_by('-created_at')[:8] 
 
     def list(self, request, *args, **kwargs):
         """
