@@ -2,6 +2,7 @@
 -- Customized for your actual database schema
 
 -- PRODUCTS TABLE OPTIMIZATION
+CREATE INDEX idx_users_email ON users_user(email);
 CREATE INDEX IF NOT EXISTS idx_products_name ON products_product(name);
 CREATE INDEX IF NOT EXISTS idx_products_price ON products_product(price);
 CREATE INDEX IF NOT EXISTS idx_products_created_at ON products_product(created_at DESC);
