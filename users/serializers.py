@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from django.utils import timezone
 from .models import User
 
 class UserRegistrationSerializer(serializers.ModelSerializer): 
@@ -13,6 +14,19 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User  
         fields = ['email', 'username', 'password', 'password_confirm', 'first_name', 'last_name', 'phone_number', 'date_of_birth']
+        extra_kwargs = {
+            'date_of_birth': {'required': True} 
+        }
+    
+    def validate_date_of_birth(self, value):
+        """Validate that user is at least 13 years old"""
+        today = timezone.now().date()
+        age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
+        
+        if age < 13:
+            raise serializers.ValidationError("Users must be at least 13 years old.")
+        
+        return value
     
     def validate(self, data):
         if data['password'] != data['password_confirm']:
@@ -40,6 +54,11 @@ class UserLoginSerializer(serializers.Serializer):
         return data
     
 class UserProfileSerializer(serializers.ModelSerializer):
+    age = serializers.SerializerMethodField()
+    
     class Meta:
         model = User
-        fields = ['id', 'email', 'username', 'first_name', 'last_name', 'phone_number', 'date_joined']
+        fields = ['id', 'email', 'username', 'first_name', 'last_name', 'phone_number', 'date_of_birth', 'age', 'date_joined']
+    
+    def get_age(self, obj):
+        return obj.age 
