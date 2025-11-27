@@ -11,6 +11,7 @@ from .serializers import (
     OrderCancelSerializer
 )
 from cart.models import Cart
+from .utils import send_order_confirmation, send_new_order_notification  # ← ADD THIS IMPORT
 
 class OrderListView(generics.ListAPIView):
     """
@@ -48,6 +49,7 @@ def create_order(request):
     - User must be logged in
     - Requires shipping address
     - Clears cart after successful order
+    - Sends email confirmation to customer and admin
     """
     # Check if user has a cart with items
     cart = get_object_or_404(Cart, user=request.user)
@@ -67,11 +69,21 @@ def create_order(request):
             # Use your model's create_from_cart method
             order = Order.create_from_cart(cart, shipping_address)
             
+            # === SEND EMAIL NOTIFICATIONS ===
+            try:
+                send_order_confirmation(order)
+                send_new_order_notification(order)
+                print("✅ Order confirmation emails sent successfully!")
+            except Exception as e:
+                print(f"⚠️ Email sending failed (order still created): {e}")
+            # === END EMAIL NOTIFICATIONS ===
+            
             return Response(
                 {
                     "message": "Order created successfully",
                     "order_number": order.order_number,
-                    "order_id": order.id
+                    "order_id": order.id,
+                    "emails_sent": True
                 },
                 status=status.HTTP_201_CREATED
             )

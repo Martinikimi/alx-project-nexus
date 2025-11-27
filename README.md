@@ -128,25 +128,25 @@ Foreign Key Indexes for relationship-based queries
 📁 Project Structure
 text
 ecommerce-backend/
-├── config/                 # Django settings
-├── users/                  # Authentication app
-├── products/               # Product management
-├── categories/             # Category management
-├── cart/                   # Shopping cart
-├── orders/                 # Order processing
-├── reviews/                # Product reviews
-├── payments/               # Payment processing
-├── common/                 # Shared utilities
-├── database/               # Database optimization (NEW)
+├── config/             
+├── users/                  
+├── products/               
+├── categories/             
+├── cart/                   
+├── orders/                 
+├── reviews/              
+├── payments/               
+├── common/               
+├── database/              
 │   ├── migrations/
 │   │   └── 002_performance_indexes.sql
 │   └── optimization_docs.md
-├── scripts/                # Utility scripts (NEW)
+├── scripts/                
 │   └── database_indexes.py
-├── static/                 # Static files
-├── media/                  # User uploads
-├── templates/              # HTML templates
-├── docs/                   # Documentation
+├── static/                
+├── media/                  
+├── templates/           
+├── docs/                  
 ├── manage.py
 ├── requirements.txt
 ├── docker-compose.yml
