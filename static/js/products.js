@@ -150,11 +150,11 @@ function displayCategories(categories) {
     }
 
     listElement.innerHTML = categories.map(category => `
-        <div class="product-card">
+        <div class="product-card" style="cursor: pointer;" onclick="filterProductsByCategory(${category.id}, '${category.name}')">
             <div class="product-info">
                 <h3><i class="fas fa-tags"></i> ${category.name}</h3>
                 <p class="product-category">${category.description || 'No description available'}</p>
-                <button class="btn-secondary" onclick="navigateTo('/products')">
+                <button class="btn-secondary" onclick="event.stopPropagation(); filterProductsByCategory(${category.id}, '${category.name}')">
                     <i class="fas fa-eye"></i> View Products
                 </button>
             </div>
@@ -456,4 +456,66 @@ async function loadProductsWithFilters() {
     } finally {
         loadingElement.classList.add('hidden');
     }
+}
+
+// DIRECT CATEGORY FILTERING - COMPLETELY BYPASSES FILTER CONTROLS
+function filterProductsByCategory(categoryId, categoryName) {
+    console.log('Direct category filtering:', categoryId, categoryName);
+    
+    // Navigate to products page
+    navigateTo('/products');
+    
+    // Wait for products page to load, then load products directly
+    setTimeout(() => {
+        // Set the category filter dropdown value (for visual consistency)
+        const categoryFilter = document.getElementById('categoryFilter');
+        if (categoryFilter) {
+            categoryFilter.value = categoryId;
+        }
+        
+        // COMPLETELY BYPASS FILTER CONTROLS - Load products directly
+        const loadingElement = document.getElementById('productsLoading');
+        const gridElement = document.getElementById('productsGrid');
+        const resultsInfo = document.getElementById('resultsInfo');
+        
+        loadingElement.classList.remove('hidden');
+        gridElement.innerHTML = '';
+        
+        // Show which category we're viewing
+        resultsInfo.innerHTML = `Showing products in: <strong>${categoryName}</strong>`;
+        resultsInfo.classList.remove('hidden');
+
+        // Load products directly from API with category filter - NO FILTER PROCESSING
+        fetch(`${PRODUCTS_API}/?category=${categoryId}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                let products = [];
+                if (data.results !== undefined) {
+                    products = data.results || [];
+                } else if (Array.isArray(data)) {
+                    products = data;
+                }
+                
+                displayProducts(products);
+                
+                // Hide pagination since we're showing direct results
+                document.getElementById('paginationContainer').classList.add('hidden');
+            })
+            .catch(error => {
+                console.error('Error loading category products:', error);
+                gridElement.innerHTML = `
+                    <div class="error w-full text-center">
+                        <h3>❌ Error loading products</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            })
+            .finally(() => {
+                loadingElement.classList.add('hidden');
+            });
+        
+    }, 300);
 }

@@ -1,5 +1,3 @@
-// Main application file - imports all other modules
-// This file should be loaded last in your HTML
 
 // Global event listeners
 document.addEventListener('DOMContentLoaded', function() {
