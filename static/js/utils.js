@@ -22,10 +22,10 @@ let currentFilters = {
     sort: ''
 };
 
-// Pagination state
+// FIXED: Global state with proper initialization
 let paginationState = {
     currentPage: 1,
-    pageSize: 15,
+    pageSize: 15, // Default value
     totalPages: 1,
     totalCount: 0,
     hasNext: false,
@@ -211,4 +211,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add scroll event listener for back-to-top button
     window.addEventListener('scroll', updateBackToTopButton);
-}
+});
