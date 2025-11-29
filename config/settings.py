@@ -26,11 +26,19 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key-for-development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Railway deployment settings
-if 'RAILWAY_STATIC_URL' in os.environ:
-    ALLOWED_HOSTS = ['*']  
+IS_RAILWAY = any(key in os.environ for key in ['RAILWAY_STATIC_URL', 'DATABASE_URL', 'RAILWAY_ENVIRONMENT'])
+
+if IS_RAILWAY:
+    ALLOWED_HOSTS = [
+        'alx-project-nexus-production-8a7d.up.railway.app',
+        '.railway.app', 
+        'localhost',
+        '127.0.0.1',
+        '0.0.0.0'
+    ]
     DEBUG = False
 else:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'web', 'db']
@@ -81,6 +89,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://alx-project-nexus-production-8a7d.up.railway.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -122,7 +131,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 if 'DATABASE_URL' in os.environ:
     import dj_database_url
     DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=600)
     }
 else:
     DATABASES = {
@@ -145,7 +154,6 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='martinikimi7@gmail.com')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='martinikimi7@gmail.com')
 ADMIN_EMAIL = config('ADMIN_EMAIL', default='martinikimi7@gmail.com')
-SECURE_SSL_REDIRECT = False
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -181,7 +189,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # WhiteNoise configuration for production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (User uploaded files like product images)
+# Media files 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -195,3 +203,5 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
+else:
+    SECURE_SSL_REDIRECT = False
