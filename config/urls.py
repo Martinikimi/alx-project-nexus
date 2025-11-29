@@ -3,11 +3,43 @@ from django.urls import path, include
 from django.views.generic import TemplateView 
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse  
 
 # Swagger imports
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+
+# ADD THIS TEST FUNCTION
+def test_products(request):
+    try:
+        from products.models import Product
+        products = Product.objects.all()
+        return JsonResponse({
+            "status": "success", 
+            "count": products.count(),
+            "message": "Products model works"
+        })
+    except Exception as e:
+        return JsonResponse({
+            "status": "error",
+            "message": str(e)
+        }, status=500)
+
+# HEALTH CHECK
+def health_check(request):
+    try:
+        from django.db import connection
+        connection.ensure_connection()
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+    
+    return JsonResponse({
+        "status": "ok",
+        "database": db_status,
+        "debug": settings.DEBUG
+    })
 
 # Schema view for Swagger
 schema_view = get_schema_view(
@@ -26,6 +58,10 @@ schema_view = get_schema_view(
 urlpatterns = [
     # Admin
     path('admin/', admin.site.urls),
+    
+    # TEST ENDPOINTS 
+    path('api/test-products/', test_products),
+    path('api/health/', health_check),
     
     # API Documentation
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -26,7 +26,7 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key-for-development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True  # CHANGED TO TRUE TO SEE ERRORS
 
 # Railway deployment settings - FIXED
 IS_RAILWAY = any(key in os.environ for key in ['RAILWAY_STATIC_URL', 'DATABASE_URL', 'RAILWAY_ENVIRONMENT'])
@@ -39,7 +39,6 @@ if IS_RAILWAY:
         '127.0.0.1',
         '0.0.0.0'
     ]
-    DEBUG = False
 else:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'web', 'db']
 
@@ -215,13 +214,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Security settings for production 
+# Security settings for production - DISABLED FOR DEBUGGING
 SECURE_SSL_REDIRECT = False  
-if not DEBUG:
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+# Logging to see errors
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
 
 # Railway specific settings
 if IS_RAILWAY:
