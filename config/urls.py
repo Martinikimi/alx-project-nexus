@@ -4,45 +4,20 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.http import JsonResponse  
 from django.views.static import serve
-from django.core.management import call_command  
+from django.core.management import call_command
 
 # Swagger imports
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-# ADD THIS MIGRATION FUNCTION
+# MIGRATION FUNCTION
 def run_migrations(request):
-    """Temporary endpoint to run migrations on Render"""
     try:
-        # Run all migrations
         call_command('migrate', verbosity=0)
-        return JsonResponse({
-            "status": "success", 
-            "message": "All migrations completed successfully"
-        })
+        return JsonResponse({"status": "success", "message": "All migrations completed successfully"})
     except Exception as e:
-        return JsonResponse({
-            "status": "error", 
-            "message": str(e),
-            "error_type": type(e).__name__
-        }, status=500)
-
-# ADD THIS TEST FUNCTION
-def test_products(request):
-    try:
-        from products.models import Product
-        products = Product.objects.all()
-        return JsonResponse({
-            "status": "success", 
-            "count": products.count(),
-            "message": "Products model works"
-        })
-    except Exception as e:
-        return JsonResponse({
-            "status": "error",
-            "message": str(e)
-        }, status=500)
+        return JsonResponse({"status": "error", "message": str(e), "error_type": type(e).__name__}, status=500)
 
 # HEALTH CHECK
 def health_check(request):
@@ -53,11 +28,7 @@ def health_check(request):
     except Exception as e:
         db_status = f"error: {str(e)}"
     
-    return JsonResponse({
-        "status": "ok",
-        "database": db_status,
-        "debug": settings.DEBUG
-    })
+    return JsonResponse({"status": "ok", "database": db_status, "debug": settings.DEBUG})
 
 # Schema view for Swagger
 schema_view = get_schema_view(
@@ -81,7 +52,6 @@ urlpatterns = [
     path('api/run-migrations/', run_migrations),
     
     # TEST ENDPOINTS 
-    path('api/test-products/', test_products),
     path('api/health/', health_check),
     
     # API Documentation
@@ -97,10 +67,11 @@ urlpatterns = [
     path('api/reviews/', include('reviews.urls')),
     path('api/payments/', include('payments.urls')), 
     
-    # Serve static files explicitly
-    path('static/<path:path>', serve, {
-        'document_root': settings.STATIC_ROOT,
-    }),
+    # Serve static files
+    path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),
+    
+    # Serve media files 
+    path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
     
     # Serve index.html for frontend routes
     path('', TemplateView.as_view(template_name='index.html'), name='home'),

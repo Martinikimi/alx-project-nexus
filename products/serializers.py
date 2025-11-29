@@ -17,8 +17,8 @@ class ProductListSerializer(serializers.ModelSerializer):
             if request:
                 return request.build_absolute_uri(obj.image.url)
             else:
-                # Fallback if no request context
-                return f"http://127.0.0.1:8000/media/{obj.image.url}"
+                # Fallback for production - use your actual Render URL
+                return f"https://alx-project-nexus-agn5.onrender.com/media/{obj.image.url}"
         return None
 
 
@@ -37,7 +37,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             if request:
                 return request.build_absolute_uri(obj.image.url)
             else:
-                return f"http://127.0.0.1:8000/media/{obj.image.url}"
+                # Fallback for production - use your actual Render URL
+                return f"https://alx-project-nexus-agn5.onrender.com/media/{obj.image.url}"
         return None
 
 
