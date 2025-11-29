@@ -84,18 +84,17 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 }
 
-# CORS SETTINGS - UPDATED FOR CSRF
-CORS_ALLOW_ALL_ORIGINS = True 
+# CORS SETTINGS 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False  
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    "https://alx-project-nexus-production-8a7d.up.railway.app",
+    "https://*.up.railway.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://alx-project-nexus-production-8a7d.up.railway.app",
 ]
-CORS_ALLOW_CREDENTIALS = True
 
-# CSRF SETTINGS - FIXED FOR LOGIN
+# CSRF SETTINGS - COMPLETELY FIXED FOR RAILWAY
 CSRF_TRUSTED_ORIGINS = [
     "https://alx-project-nexus-production-8a7d.up.railway.app",
     "https://*.up.railway.app",
@@ -103,15 +102,20 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
-# FIX CSRF FOR LOGIN
-CSRF_COOKIE_SAMESITE = 'None'
+# FIX CSRF COOKIE SETTINGS
+CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SECURE = True
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_HTTPONLY = False
 
-# FIX SESSION FOR LOGIN
-SESSION_COOKIE_SAMESITE = 'None'
+# FIX SESSION SETTINGS
+SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+
+# RAILWAY PROXY SETTINGS
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  
@@ -210,7 +214,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Security settings for production - DISABLED FOR DEBUGGING
+# Security settings for production 
 SECURE_SSL_REDIRECT = False  
 
 # Logging to see errors
