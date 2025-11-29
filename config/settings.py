@@ -8,6 +8,7 @@ from pathlib import Path
 from decouple import config
 from datetime import timedelta
 import dj_database_url
+import whitenoise  # Add this import
 
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,6 +83,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# WhiteNoise configuration
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -151,7 +156,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Static files settings for production
 if not DEBUG:
-    # Enable WhiteNoise storage backend which takes care of compressing static files
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files

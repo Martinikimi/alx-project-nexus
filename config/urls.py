@@ -83,12 +83,10 @@ urlpatterns = [
     path('profile/', TemplateView.as_view(template_name='index.html'), name='profile'),
 ]
 
-# Serve static files in development
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve static files in development AND production
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# Catch-all route AFTER static configuration
+# Catch-all route should be ABSOLUTELY LAST
 urlpatterns += [
     path('<path:unknown_path>/', TemplateView.as_view(template_name='index.html')),
 ]
