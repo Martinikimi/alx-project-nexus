@@ -1,5 +1,5 @@
 // API Base URLs
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = window.location.origin + '/api';
 const AUTH_API = `${API_BASE}/auth`;
 const PRODUCTS_API = `${API_BASE}/products`;
 const CATEGORIES_API = `${API_BASE}/categories`;
