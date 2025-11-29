@@ -121,7 +121,7 @@ function displayProductDetail(product) {
     `;
 }
 
-// Category Functions
+// Category Functions - FIXED VERSION
 async function loadCategories() {
     const loadingElement = document.getElementById('categoriesLoading');
     const listElement = document.getElementById('categoriesList');
@@ -132,11 +132,25 @@ async function loadCategories() {
     try {
         const response = await fetch(`${CATEGORIES_API}/`);
         if (response.ok) {
-            categories = await response.json();
+            const data = await response.json();
+            
+            // FIX: Handle both array and paginated response formats
+            if (Array.isArray(data)) {
+                categories = data;
+            } else if (data.results && Array.isArray(data.results)) {
+                categories = data.results; // Paginated response
+            } else {
+                console.error('Unexpected categories format:', data);
+                categories = [];
+            }
+            
             displayCategories(categories);
+        } else {
+            throw new Error(`HTTP ${response.status}`);
         }
     } catch (error) {
-        listElement.innerHTML = `<div class="error">❌ Error loading categories</div>`;
+        console.error('Categories error:', error);
+        listElement.innerHTML = `<div class="error">❌ Error loading categories: ${error.message}</div>`;
     } finally {
         loadingElement.classList.add('hidden');
     }
@@ -189,11 +203,26 @@ function handleSearchEnter(event) {
     }
 }
 
+// FIXED VERSION - Categories for filter
 async function loadCategoriesForFilter() {
     try {
         const response = await fetch(`${CATEGORIES_API}/`);
         if (response.ok) {
-            const categories = await response.json();
+            const data = await response.json();
+            
+            // FIX: Handle both array and paginated response formats
+            let categories = [];
+            if (Array.isArray(data)) {
+                categories = data;
+            } else if (data.results && Array.isArray(data.results)) {
+                categories = data.results; // Paginated response
+            } else if (data.categories && Array.isArray(data.categories)) {
+                categories = data.categories; // Nested response
+            } else {
+                console.error('Unexpected categories format:', data);
+                categories = [];
+            }
+            
             const categorySelect = document.getElementById('categoryFilter');
             categorySelect.innerHTML = '<option value="">All Categories</option>' +
                 categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
@@ -458,7 +487,7 @@ async function loadProductsWithFilters() {
     }
 }
 
-// DIRECT CATEGORY FILTERING - COMPLETELY BYPASSES FILTER CONTROLS
+// DIRECT CATEGORY FILTERING 
 function filterProductsByCategory(categoryId, categoryName) {
     console.log('Direct category filtering:', categoryId, categoryName);
     
@@ -485,37 +514,63 @@ function filterProductsByCategory(categoryId, categoryName) {
         resultsInfo.innerHTML = `Showing products in: <strong>${categoryName}</strong>`;
         resultsInfo.classList.remove('hidden');
 
-        // Load products directly from API with category filter - NO FILTER PROCESSING
-        fetch(`${PRODUCTS_API}/?category=${categoryId}`)
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.json();
-            })
-            .then(data => {
-                let products = [];
-                if (data.results !== undefined) {
-                    products = data.results || [];
-                } else if (Array.isArray(data)) {
-                    products = data;
-                }
-                
-                displayProducts(products);
-                
-                // Hide pagination since we're showing direct results
-                document.getElementById('paginationContainer').classList.add('hidden');
-            })
-            .catch(error => {
-                console.error('Error loading category products:', error);
+        // TRY DIFFERENT PARAMETER NAMES FOR CATEGORY FILTERING
+        const urlsToTry = [
+            `${PRODUCTS_API}/?category=${categoryId}`,
+            `${PRODUCTS_API}/?category_id=${categoryId}`,
+            `${PRODUCTS_API}/?categories=${categoryId}`,
+            `${PRODUCTS_API}/?c=${categoryId}`
+        ];
+
+        // Try each URL until one works
+        const tryUrl = (index) => {
+            if (index >= urlsToTry.length) {
                 gridElement.innerHTML = `
                     <div class="error w-full text-center">
-                        <h3>❌ Error loading products</h3>
-                        <p>${error.message}</p>
+                        <h3>❌ No products found in this category</h3>
+                        <p>Try using the category filter dropdown instead</p>
+                        <button class="btn-secondary mt-2" onclick="clearFilters()">Show All Products</button>
                     </div>
                 `;
-            })
-            .finally(() => {
                 loadingElement.classList.add('hidden');
-            });
+                return;
+            }
+
+            console.log('Trying category filter URL:', urlsToTry[index]);
+            fetch(urlsToTry[index])
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    let products = [];
+                    if (data.results !== undefined) {
+                        products = data.results || [];
+                    } else if (Array.isArray(data)) {
+                        products = data;
+                    }
+                    
+                    if (products.length > 0) {
+                        console.log(`✅ Category filter working with: ${urlsToTry[index]}`);
+                        displayProducts(products);
+                        document.getElementById('paginationContainer').classList.add('hidden');
+                    } else {
+                        // Try next URL if no products found
+                        tryUrl(index + 1);
+                    }
+                })
+                .catch(error => {
+                    console.log(`❌ Failed with ${urlsToTry[index]}:`, error);
+                    // Try next URL
+                    tryUrl(index + 1);
+                })
+                .finally(() => {
+                    loadingElement.classList.add('hidden');
+                });
+        };
+
+        // Start trying URLs
+        tryUrl(0);
         
     }, 300);
 }
