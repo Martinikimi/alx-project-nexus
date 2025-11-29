@@ -6,8 +6,7 @@ import os
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
-import django_heroku
-import dj_database_url  
+import dj_database_url
 
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,10 +16,10 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key-for-development')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Heroku settings
-IS_HEROKU = "DYNO" in os.environ
-if IS_HEROKU:
-    ALLOWED_HOSTS = ['.herokuapp.com']
+# Render settings
+IS_RENDER = "RENDER" in os.environ
+if IS_RENDER:
+    ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 else:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
@@ -67,7 +66,7 @@ SIMPLE_JWT = {
 
 # CORS & CSRF
 CORS_ALLOW_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
 
 # Middleware
 MIDDLEWARE = [
@@ -101,7 +100,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# ✅ POSTGRESQL DATABASE 
+# Database 
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
@@ -144,6 +143,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Heroku settings
-django_heroku.settings(locals())
