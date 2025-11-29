@@ -39,8 +39,21 @@ async function loadOrders() {
         console.log('📊 DEBUG: Response status:', response.status);
         
         if (response.ok) {
-            const orders = await response.json();
-            console.log('✅ DEBUG: Orders loaded successfully:', orders);
+            const data = await response.json();
+            console.log('📦 DEBUG: Raw orders data:', data);
+            
+            // FIX: Handle both array and paginated response formats
+            let orders = [];
+            if (Array.isArray(data)) {
+                orders = data;
+            } else if (data.results && Array.isArray(data.results)) {
+                orders = data.results; // Paginated response
+            } else {
+                console.error('❌ Unexpected orders format:', data);
+                orders = [];
+            }
+            
+            console.log('✅ DEBUG: Processed orders:', orders);
             displayOrders(orders);
         } else {
             console.error('❌ DEBUG: API Error - Status:', response.status);
@@ -59,7 +72,8 @@ async function loadOrders() {
 function displayOrders(orders) {
     const ordersListElement = document.getElementById('ordersList');
     
-    if (orders.length === 0) {
+    // FIX: Check if orders is an array and has items
+    if (!orders || !Array.isArray(orders) || orders.length === 0) {
         ordersListElement.innerHTML = '<div class="info"><i class="fas fa-clipboard-list"></i> No orders found</div>';
         return;
     }
