@@ -130,19 +130,17 @@ else:
         }
     }
 
-# Email Configuration
-EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='martinikimi7@gmail.com')
+# Email Configuration - FIXED VERSION
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Always use console for now
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'martinikimi7@gmail.com'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='martinikimi7@gmail.com')
+DEFAULT_FROM_EMAIL = 'martinikimi7@gmail.com'
 ADMIN_EMAIL = config('ADMIN_EMAIL', default='martinikimi7@gmail.com')
 
-# For development - print emails to console
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# For development - print emails to console (REMOVED the problematic if DEBUG block)
 
 # Auth
 AUTH_USER_MODEL = 'users.User'
