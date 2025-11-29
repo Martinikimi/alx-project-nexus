@@ -28,13 +28,13 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key-for-deve
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Railway deployment settings
+# Railway deployment settings - FIXED
 IS_RAILWAY = any(key in os.environ for key in ['RAILWAY_STATIC_URL', 'DATABASE_URL', 'RAILWAY_ENVIRONMENT'])
 
 if IS_RAILWAY:
     ALLOWED_HOSTS = [
         'alx-project-nexus-production-8a7d.up.railway.app',
-        '.railway.app', 
+        '.railway.app',  # Allows all railway subdomains
         'localhost',
         '127.0.0.1',
         '0.0.0.0'
@@ -189,19 +189,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # WhiteNoise configuration for production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files 
+# Media files (User uploaded files like product images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Security settings for production
+# Security settings for production 
+SECURE_SSL_REDIRECT = False  
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
-else:
-    SECURE_SSL_REDIRECT = False
