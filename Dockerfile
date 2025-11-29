@@ -17,6 +17,9 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+#  Collect static files during build
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 8000
 
 # FIX: Use default port if $PORT not set
