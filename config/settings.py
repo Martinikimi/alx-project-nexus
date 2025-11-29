@@ -1,7 +1,6 @@
 """
-Django settings for config project.
+Django settings for Ecommerce_backend project.
 """
-
 import sys
 import os
 from pathlib import Path
