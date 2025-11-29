@@ -2,15 +2,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView 
 from django.conf import settings
-from django.conf.urls.static import static
 from django.http import JsonResponse  
+from django.views.static import serve  
 
 # Swagger imports
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-# ADD THIS TEST FUNCTION
+
 def test_products(request):
     try:
         from products.models import Product
@@ -76,15 +76,17 @@ urlpatterns = [
     path('api/reviews/', include('reviews.urls')),
     path('api/payments/', include('payments.urls')), 
     
+    # Serve static files explicitly - ADD THESE LINES
+    path('static/<path:path>', serve, {
+        'document_root': settings.STATIC_ROOT,
+    }),
+    
     # Serve index.html for frontend routes
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('login/', TemplateView.as_view(template_name='index.html'), name='login'),
     path('register/', TemplateView.as_view(template_name='index.html'), name='register'),
     path('profile/', TemplateView.as_view(template_name='index.html'), name='profile'),
 ]
-
-# Serve static files in development AND production
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Catch-all route should be ABSOLUTELY LAST
 urlpatterns += [
