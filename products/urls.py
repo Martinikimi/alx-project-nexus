@@ -4,6 +4,9 @@ from . import views
 app_name = 'products'
 
 urlpatterns = [
+    # Debug endpoint (to find the error)
+    path('debug/', views.debug_test, name='debug-test'),
+    
     # Public endpoints (anyone can access)
     path('', views.ProductListView.as_view(), name='product-list'),
     path('<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),

@@ -1,12 +1,10 @@
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics, permissions, filters
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, permissions
 from django.db.models import Q
 from .models import Product
 from .serializers import (ProductListSerializer, ProductDetailSerializer, ProductCreateSerializer)
 from categories.models import Category
 from rest_framework.response import Response
-
+from rest_framework.decorators import api_view
 
 
 class ProductPagination:
@@ -54,6 +52,46 @@ class ProductPagination:
             'has_next': self.page_number < self.total_pages,
             'has_previous': self.page_number > 1,
         }
+
+
+@api_view(['GET'])
+def debug_test(request):
+    """Debug endpoint to find the exact error"""
+    try:
+        # Test 1: Can we import the model?
+        from .models import Product
+        print("✓ Model imported successfully")
+        
+        # Test 2: Can we query the database?
+        count = Product.objects.count()
+        print(f"✓ Database query successful - {count} products")
+        
+        # Test 3: Can we import serializers?
+        from .serializers import ProductListSerializer
+        print("✓ Serializers imported successfully")
+        
+        # Test 4: Try to serialize
+        products = Product.objects.all()[:1]
+        if products:
+            serializer = ProductListSerializer(products, many=True, context={'request': request})
+            data = serializer.data
+            print("✓ Serialization successful")
+        
+        return Response({
+            "status": "success",
+            "message": "All tests passed",
+            "product_count": count
+        })
+        
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        
+        return Response({
+            "status": "error", 
+            "message": str(e),
+            "error_type": type(e).__name__,
+        }, status=500)
 
 
 class ProductListView(generics.ListAPIView):
