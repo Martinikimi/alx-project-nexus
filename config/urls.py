@@ -5,26 +5,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.http import JsonResponse  
 
-# ADD THESE IMPORTS FOR LOGIN BYPASS
-from django.contrib.auth import login
-from django.shortcuts import redirect
-from users.models import User
-
-# ADD LOGIN BYPASS FUNCTION
-def superuser_login_bypass(request):
-    """Temporary superuser login bypass"""
-    user = User.objects.filter(is_superuser=True).first()
-    if user:
-        login(request, user)
-        return redirect('/admin/')
-    return redirect('/admin/login/')
-
 # Swagger imports
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-# TEST FUNCTION
+# ADD THIS TEST FUNCTION
 def test_products(request):
     try:
         from products.models import Product
@@ -70,9 +56,6 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    # ADD LOGIN BYPASS URL - PUT THIS FIRST
-    path('super-login/', superuser_login_bypass),
-    
     # Admin
     path('admin/', admin.site.urls),
     
