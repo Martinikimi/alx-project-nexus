@@ -70,6 +70,9 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny', 
     ]
 }
 
@@ -82,7 +85,7 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 }
 
-# CORS SETTINGS
+# CORS SETTINGS - UPDATED FOR CSRF
 CORS_ALLOW_ALL_ORIGINS = True 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
@@ -92,6 +95,17 @@ CORS_ALLOWED_ORIGINS = [
     "https://alx-project-nexus-production-8a7d.up.railway.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
+
+# CSRF SETTINGS
+CSRF_TRUSTED_ORIGINS = [
+    "https://alx-project-nexus-production-8a7d.up.railway.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# For API compatibility
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_HTTPONLY = False
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  
@@ -209,5 +223,6 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
+# Railway specific settings
 if IS_RAILWAY:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
