@@ -19,6 +19,21 @@ def run_migrations(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e), "error_type": type(e).__name__}, status=500)
 
+# TEST EMAIL FUNCTION - ADD THIS
+def test_email(request):
+    from django.core.mail import send_mail
+    try:
+        send_mail(
+            'Test Email from Your Store',
+            'This is a test email from your Django application.',
+            'martinikimi7@gmail.com',
+            ['martinikimi7@gmail.com'],
+            fail_silently=False,
+        )
+        return JsonResponse({"status": "success", "message": "Test email sent!"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
 # HEALTH CHECK
 def health_check(request):
     try:
@@ -52,6 +67,7 @@ urlpatterns = [
     path('api/run-migrations/', run_migrations),
     
     # TEST ENDPOINTS 
+    path('api/test-email/', test_email),  
     path('api/health/', health_check),
     
     # API Documentation
