@@ -95,16 +95,23 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 
-# CSRF SETTINGS
+# CSRF SETTINGS - FIXED FOR LOGIN
 CSRF_TRUSTED_ORIGINS = [
     "https://alx-project-nexus-production-8a7d.up.railway.app",
+    "https://*.up.railway.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
-# For API compatibility
+# FIX CSRF FOR LOGIN
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_HTTPONLY = False
+
+# FIX SESSION FOR LOGIN
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  
@@ -205,8 +212,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Security settings for production - DISABLED FOR DEBUGGING
 SECURE_SSL_REDIRECT = False  
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
 
 # Logging to see errors
 LOGGING = {
