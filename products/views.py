@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
@@ -5,6 +6,7 @@ from .models import Product
 from .serializers import (ProductListSerializer, ProductDetailSerializer, ProductCreateSerializer)
 from categories.models import Category
 from rest_framework.response import Response
+
 
 
 class ProductPagination:
