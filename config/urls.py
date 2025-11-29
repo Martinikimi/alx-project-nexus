@@ -3,14 +3,32 @@ from django.urls import path, include
 from django.views.generic import TemplateView 
 from django.conf import settings
 from django.http import JsonResponse  
-from django.views.static import serve  
+from django.views.static import serve
+from django.core.management import call_command  
 
 # Swagger imports
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+# ADD THIS MIGRATION FUNCTION
+def run_migrations(request):
+    """Temporary endpoint to run migrations on Render"""
+    try:
+        # Run all migrations
+        call_command('migrate', verbosity=0)
+        return JsonResponse({
+            "status": "success", 
+            "message": "All migrations completed successfully"
+        })
+    except Exception as e:
+        return JsonResponse({
+            "status": "error", 
+            "message": str(e),
+            "error_type": type(e).__name__
+        }, status=500)
 
+# ADD THIS TEST FUNCTION
 def test_products(request):
     try:
         from products.models import Product
@@ -59,6 +77,9 @@ urlpatterns = [
     # Admin
     path('admin/', admin.site.urls),
     
+    # MIGRATION ENDPOINT
+    path('api/run-migrations/', run_migrations),
+    
     # TEST ENDPOINTS 
     path('api/test-products/', test_products),
     path('api/health/', health_check),
@@ -76,7 +97,7 @@ urlpatterns = [
     path('api/reviews/', include('reviews.urls')),
     path('api/payments/', include('payments.urls')), 
     
-    # Serve static files explicitly - ADD THESE LINES
+    # Serve static files explicitly
     path('static/<path:path>', serve, {
         'document_root': settings.STATIC_ROOT,
     }),
