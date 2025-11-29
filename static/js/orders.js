@@ -1,10 +1,25 @@
+// DEBUG: Check if ORDERS_API is available
+console.log('🔍 ORDERS.js LOADED - ORDERS_API:', typeof ORDERS_API !== 'undefined' ? ORDERS_API : 'UNDEFINED');
+
+// If ORDERS_API is undefined, define it temporarily
+if (typeof ORDERS_API === 'undefined') {
+    console.error('❌ ORDERS_API is undefined! Script loading order issue.');
+    const ORDERS_API = window.location.origin + '/api/orders';
+    console.log('🔧 TEMPORARY FIX: Defined ORDERS_API as:', ORDERS_API);
+}
+
 // Order Functions
 async function loadOrders() {
     const token = localStorage.getItem('access_token');
     const loadingElement = document.getElementById('ordersLoading');
     const listElement = document.getElementById('ordersList');
     
+    console.log('🔐 DEBUG: Token exists:', !!token);
+    console.log('📡 DEBUG: ORDERS_API:', ORDERS_API);
+    console.log('📡 DEBUG: Calling URL:', `${ORDERS_API}/`);
+    
     if (!token) {
+        console.log('❌ DEBUG: No token, redirecting to login');
         navigateTo('/login');
         return;
     }
@@ -13,6 +28,7 @@ async function loadOrders() {
     listElement.innerHTML = '';
 
     try {
+        console.log('🚀 DEBUG: Making API request to orders...');
         const response = await fetch(`${ORDERS_API}/`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -20,12 +36,21 @@ async function loadOrders() {
             },
         });
 
+        console.log('📊 DEBUG: Response status:', response.status);
+        
         if (response.ok) {
             const orders = await response.json();
+            console.log('✅ DEBUG: Orders loaded successfully:', orders);
             displayOrders(orders);
+        } else {
+            console.error('❌ DEBUG: API Error - Status:', response.status);
+            const errorText = await response.text();
+            console.error('❌ DEBUG: Error response:', errorText);
+            listElement.innerHTML = `<div class="error">❌ Error loading orders (${response.status})</div>`;
         }
     } catch (error) {
-        listElement.innerHTML = `<div class="error">❌ Error loading orders</div>`;
+        console.error('❌ DEBUG: Network error:', error);
+        listElement.innerHTML = `<div class="error">❌ Error loading orders: ${error.message}</div>`;
     } finally {
         loadingElement.classList.add('hidden');
     }

@@ -379,13 +379,16 @@
             </div>
         </div>
     </footer>
+     
 
+    
     <!-- JavaScript Files -->
-    <script src="/static/js/utils.js"></script>
-    <script src="/static/js/auth.js"></script>
-    <script src="/static/js/products.js"></script>
-    <script src="/static/js/cart.js"></script>
-    <script src="/static/js/orders.js"></script>
-    <script src="/static/js/app.js"></script>
+    <script src="/static/js/utils.js"></script>      <!-- 1st: API constants -->
+    <script src="/static/js/app.js"></script>        <!-- 2nd: Core app functions -->
+    <script src="/static/js/auth.js"></script>       <!-- 3rd: Uses app.js functions -->
+    <script src="/static/js/products.js"></script>   <!-- 4th: Uses utils.js constants -->
+    <script src="/static/js/cart.js"></script>       <!-- 5th: Uses utils.js constants -->
+    <script src="/static/js/orders.js"></script>     <!-- 6th: Uses utils.js constants -->
+
 </body>
 </html>
