@@ -17,10 +17,8 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+# Run migrations during build
 RUN python manage.py migrate --noinput
-
-# Auto-create superuser
-RUN echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'password123') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell
 
 EXPOSE 8000
 
