@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            margin: 0;
+            padding: 0;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        .header { 
+            background: #dc2626; 
+            color: white; 
+            padding: 25px; 
+            text-align: center; 
+            border-radius: 10px 10px 0 0; 
+        }
+        .order-details { 
+            background: #fef2f2; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 8px;
+            border-left: 4px solid #dc2626;
+        }
+        .items-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .items-table th { 
+            background: #dc2626; 
+            color: white;
+            padding: 15px; 
+            text-align: left; 
+            font-weight: bold;
+        }
+        .items-table td { 
+            padding: 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #e5e7eb; 
+        }
+        .items-table tr:hover {
+            background: #f9fafb;
+        }
+        .total { 
+            font-size: 1.3em; 
+            font-weight: bold; 
+            color: #dc2626; 
+            text-align: right;
+            margin: 20px 0;
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding: 25px; 
+            background: #f8fafc; 
+            text-align: center; 
+            border-radius: 0 0 10px 10px;
+            border-top: 2px solid #e5e7eb;
+        }
+        .alert { 
+            background: #fff3cd; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin: 20px 0; 
+            border-left: 4px solid #ffc107;
+        }
+        .btn {
+            display: inline-block;
+            background: #dc2626;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            background: #b91c1c;
+        }
+        .customer-info {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1> NEW ORDER ALERT</h1>
+            <p style="margin: 0; font-size: 1.1em;">Order #{{ order.order_number }} requires your attention</p>
+        </div>
+        
+        <div class="alert">
+            <strong style="font-size: 1.1em;"> IMMEDIATE ACTION REQUIRED</strong>
+            <p style="margin: 10px 0;">A new order has been placed and is waiting for processing.</p>
+            <div style="margin-top: 15px;">
+                <a href="https://alx-project-nexus-agn5.onrender.com/admin/orders/order/{{ order.id }}/change/" class="btn">
+                    📋 VIEW ORDER IN ADMIN
+                </a>
+                <a href="https://alx-project-nexus-agn5.onrender.com/admin/orders/order/" class="btn" style="background: #374151;">
+                    📊 ALL ORDERS
+                </a>
+            </div>
+        </div>
+        
+        <div class="customer-info">
+            <h3 style="margin-top: 0; color: #0369a1;">Customer Information</h3>
+            <p><strong> Customer:</strong> {{ customer_name }}</p>
+            <p><strong> Email:</strong> {{ order.user.email }}</p>
+            <p><strong> Contact:</strong> {{ order.user.phone_number|default:"Not provided" }}</p>
+        </div>
+        
+        <div class="order-details">
+            <h2 style="margin-top: 0; color: #dc2626;">Order Summary</h2>
+            <p><strong> Order Number:</strong> #{{ order.order_number }}</p>
+            <p><strong> Order Date:</strong> {{ order.created_at|date:"F j, Y g:i A" }}</p>
+            <p><strong> Status:</strong> <span style="color: #dc2626; font-weight: bold; background: #fecaca; padding: 4px 8px; border-radius: 4px;">{{ order.status|upper }}</span></p>
+            <p><strong> Total Amount:</strong> <span style="font-size: 1.2em; font-weight: bold; color: #dc2626;">Ksh {{ order.total_amount }}</span></p>
+            
+            {% if order.shipping_address %}
+            <div style="margin-top: 15px;">
+                <strong> Shipping Address:</strong>
+                <div style="background: white; padding: 12px; border-radius: 4px; margin-top: 5px;">
+                    {{ order.shipping_address|linebreaks }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <h2 style="color: #374151; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">Order Items</h2>
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td><strong>{{ item.product.name }}</strong></td>
+                    <td>Ksh {{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td><strong>Ksh {{ item.get_total_price }}</strong></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total">
+             GRAND TOTAL: Ksh {{ order.total_amount }}
+        </div>
+
+        <div class="footer">
+            <p style="margin: 0 0 15px 0; font-size: 1.1em;"><strong>Next Steps:</strong></p>
+            <p style="margin: 5px 0;">1. Review order details above</p>
+            <p style="margin: 5px 0;">2. Process the order in admin panel</p>
+            <p style="margin: 5px 0;">3. Update order status as it progresses</p>
+            <p style="margin: 5px 0;">4. Contact customer if needed</p>
+            
+            <div style="margin-top: 20px;">
+                <a href="https://alx-project-nexus-agn5.onrender.com/admin/orders/order/{{ order.id }}/change/" 
+                   style="color: #dc2626; text-decoration: none; font-weight: bold; font-size: 1.1em;">
+                   🔗 Direct Order Link: https://alx-project-nexus-agn5.onrender.com/admin/orders/order/{{ order.id }}/change/
+                </a>
+            </div>
+            
+            <p style="margin: 20px 0 0 0; color: #6b7280; font-size: 0.9em;">
+                This is an automated notification from ALX Project Nexus
+            </p>
+        </div>
+    </div>
+</body>
+</html>

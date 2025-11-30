@@ -1,159 +1,168 @@
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+import resend
 from django.conf import settings
+from django.template.loader import render_to_string
+
+# Configure Resend
+resend.api_key = settings.RESEND_API_KEY
 
 def send_order_confirmation(order):
     """
-    Send order confirmation email to customer who placed the order
+    Send order confirmation email to customer using Resend
     """
     try:
-        subject = f"Order Confirmation - #{order.order_number}"
+        if not order.user.email:
+            print(" No email address for user")
+            return False
+            
+        print(f" Sending order confirmation to: {order.user.email}")
         
-        # Create HTML content
-        html_content = render_to_string(
-            'emails/order_confirmation.html',
-            {
-                'order': order,
-                'order_items': order.items.all(),
-                'store_name': 'NexusStore',
-                'support_email': 'martinikimi7@gmail.com'
+        context = {
+            'order': order,
+            'items': order.items.all(),
+            'customer_name': order.user.username,
+            'settings': {
+                'DEFAULT_FROM_EMAIL': 'martinikimi7@gmail.com'
             }
-        )
+        }
         
-        text_content = strip_tags(html_content)
+        html_content = render_to_string('emails/order_confirmation.html', context)
+        subject = f" Order Confirmed! - #{order.order_number}"
         
-        # Create email - sends to CUSTOMER
-        email = EmailMultiAlternatives(
-            subject=subject,
-            body=text_content,
-            from_email='martinikimi7@gmail.com',  # my Gmail as sender
-            to=[order.user.email],  # Customer's email
-            reply_to=['martinikimi7@gmail.com']  # my email for replies
-        )
+        r = resend.Emails.send({
+            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "to": [order.user.email],
+            "subject": subject,
+            "html": html_content,
+        })
         
-        email.attach_alternative(html_content, "text/html")
-        email.send()
-        
-        print(f"✅ REAL EMAIL: Order confirmation sent to CUSTOMER: {order.user.email}")
+        print(f" Order confirmation email sent successfully! ID: {r['id']}")
         return True
         
     except Exception as e:
-        print(f"❌ Failed to send order confirmation: {e}")
+        print(f" Failed to send order confirmation: {e}")
         return False
 
 def send_new_order_notification(order):
     """
-    Send new order notification to ADMIN (you)
+    Send new order notification to admin using Resend
     """
     try:
-        subject = f"🛍️ New Order Received - #{order.order_number}"
+        admin_email = "martinikimi7@gmail.com"
         
-        # Create HTML content
-        html_content = render_to_string(
-            'emails/new_order_notification.html',
-            {
-                'order': order,
-                'order_items': order.items.all(),
-                'store_name': 'NexusStore'
-            }
-        )
+        print(f" Sending admin notification to: {admin_email}")
         
-        # Create plain text version
-        text_content = strip_tags(html_content)
+        context = {
+            'order': order,
+            'items': order.items.all(),
+            'customer_name': order.user.username,
+        }
         
-        # Create email - sends to ADMIN
-        email = EmailMultiAlternatives(
-            subject=subject,
-            body=text_content,
-            from_email='martinikimi7@gmail.com', 
-            to=['martinikimi7@gmail.com'],  
-            reply_to=[order.user.email]  
-        )
+        html_content = render_to_string('emails/new_order_notification.html', context)
+        subject = f" New Order Received - #{order.order_number}"
         
-        email.attach_alternative(html_content, "text/html")
-        email.send()
+        r = resend.Emails.send({
+            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "to": [admin_email],
+            "subject": subject,
+            "html": html_content,
+        })
         
-        print(f"✅ REAL EMAIL: New order notification sent to ADMIN: martinikimi7@gmail.com")
+        print(f" Admin notification sent successfully! ID: {r['id']}")
         return True
         
     except Exception as e:
-        print(f"❌ Failed to send new order notification: {e}")
+        print(f" Failed to send admin notification: {e}")
         return False
-    
+
 def send_order_status_update(order):
     """
-    Send email to customer when order status changes
+    Send email to customer when order status changes using Resend
     """
     try:
-        subject = f"Order Update - #{order.order_number} is now {order.status.title()}"
+        if not order.user.email:
+            print(" No email address for user")
+            return False
+            
+        print(f" Sending status update to: {order.user.email}")
         
-        # Create HTML content
-        html_content = render_to_string(
-            'emails/order_status_update.html',
-            {
-                'order': order,
-                'order_items': order.items.all(),
-                'store_name': 'NexusStore',
-                'support_email': 'martinikimi7@gmail.com'
+        context = {
+            'order': order,
+            'items': order.items.all(),
+            'customer_name': order.user.username,
+            'settings': {
+                'DEFAULT_FROM_EMAIL': 'martinikimi7@gmail.com'
             }
-        )
+        }
         
-        # Create plain text version
-        text_content = strip_tags(html_content)
+        html_content = render_to_string('emails/order_status_update.html', context)
+        subject = f" Order Update - #{order.order_number}"
         
-        # Create email
-        email = EmailMultiAlternatives(
-            subject=subject,
-            body=text_content,
-            from_email='martinikimi7@gmail.com',
-            to=[order.user.email],
-            reply_to=['martinikimi7@gmail.com']
-        )
+        r = resend.Emails.send({
+            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "to": [order.user.email],
+            "subject": subject,
+            "html": html_content,
+        })
         
-        email.attach_alternative(html_content, "text/html")
-        email.send()
-        
-        print(f"✅ Order status update sent to CUSTOMER: {order.user.email}")
+        print(f" Order status update sent successfully! ID: {r['id']}")
         return True
         
     except Exception as e:
-        print(f"❌ Failed to send order status update: {e}")
+        print(f" Failed to send order status update: {e}")
         return False
 
 def send_order_shipped_notification(order):
     """
-    Special notification when order is shipped
+    Special notification when order is shipped using Resend
     """
     try:
-        subject = f"🚚 Your Order Has Shipped! - #{order.order_number}"
+        if not order.user.email:
+            print("❌ No email address for user")
+            return False
+            
+        print(f" Sending shipped notification to: {order.user.email}")
         
-        html_content = render_to_string(
-            'emails/order_shipped.html',
-            {
-                'order': order,
-                'order_items': order.items.all(),
-                'store_name': 'NexusStore',
-                'support_email': 'martinikimi7@gmail.com'
+        context = {
+            'order': order,
+            'items': order.items.all(),
+            'customer_name': order.user.username,
+            'settings': {
+                'DEFAULT_FROM_EMAIL': 'martinikimi7@gmail.com'
             }
-        )
+        }
         
-        text_content = strip_tags(html_content)
+        html_content = render_to_string('emails/order_shipped.html', context)
+        subject = f" Your Order Has Shipped! - #{order.order_number}"
         
-        email = EmailMultiAlternatives(
-            subject=subject,
-            body=text_content,
-            from_email='martinikimi7@gmail.com',
-            to=[order.user.email],
-            reply_to=['martinikimi7@gmail.com']
-        )
+        r = resend.Emails.send({
+            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "to": [order.user.email],
+            "subject": subject,
+            "html": html_content,
+        })
         
-        email.attach_alternative(html_content, "text/html")
-        email.send()
-        
-        print(f" Order shipped notification sent to CUSTOMER: {order.user.email}")
+        print(f" Order shipped notification sent successfully! ID: {r['id']}")
         return True
         
     except Exception as e:
         print(f" Failed to send shipped notification: {e}")
+        return False
+
+def send_test_email():
+    """
+    Send a test email to verify Resend is working
+    """
+    try:
+        r = resend.Emails.send({
+            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "to": ["martinikimi7@gmail.com"],
+            "subject": "Test Email from ALX Project Nexus",
+            "html": "<strong>Congratulations! Your email system is working perfectly! 🎉</strong>",
+        })
+        
+        print(f" Test email sent successfully! ID: {r['id']}")
+        return True
+        
+    except Exception as e:
+        print(f" Failed to send test email: {e}")
         return False

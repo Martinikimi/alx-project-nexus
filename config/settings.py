@@ -130,23 +130,23 @@ else:
         }
     }
 
-# Email Configuration 
+# Email Configuration - RESEND 
+RESEND_API_KEY = config('RESEND_API_KEY', default='re_EsfeBsVY_CDpyPVH2ddEVS2t7qNPzntTT')
+
+# Keep console backend for development, but we'll use Resend API directly in utils
 if DEBUG:
-    # Development: print to console
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    # Production: actually send emails
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-     
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'martinikimi7@gmail.com'
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+
+# SMTP Configuration 
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'martinikimi7@gmail.com'
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = 'martinikimi7@gmail.com'
 ADMIN_EMAIL = config('ADMIN_EMAIL', default='martinikimi7@gmail.com')
-
-# For development - print emails to console
 
 # Auth
 AUTH_USER_MODEL = 'users.User'
@@ -271,7 +271,7 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
 
-# Cache settings (simple in-memory cache for development)
+# Cache settings
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -293,3 +293,6 @@ ECOMMERCE_CONFIG = {
     'SHIPPING_COST': 5.00,
     'FREE_SHIPPING_THRESHOLD': 50.00,
 }
+
+# Resend email settings
+RESEND_FROM_EMAIL = 'ALX Project Nexus <onboarding@resend.dev>'
