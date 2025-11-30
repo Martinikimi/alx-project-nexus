@@ -340,12 +340,13 @@ async function submitReview(orderId) {
 
         // Try different review data formats
         const reviewData = {
-            product: parseInt(productId),  // Try "product" instead of "product_id"
+            product: parseInt(productId),  
             rating: currentRating,
             comment: comment
         };
 
-        const response = await fetch(`${REVIEWS_API}/`, {
+        // FIX: Use the correct endpoint - /create/ instead of /
+        const response = await fetch(`${REVIEWS_API}/create/`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
