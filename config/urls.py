@@ -19,7 +19,7 @@ def run_migrations(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e), "error_type": type(e).__name__}, status=500)
 
-# TEST EMAIL FUNCTION - ADD THIS
+# TEST EMAIL FUNCTION
 def test_email(request):
     from django.core.mail import send_mail
     try:
@@ -45,6 +45,66 @@ def health_check(request):
     
     return JsonResponse({"status": "ok", "database": db_status, "debug": settings.DEBUG})
 
+# SAFE DIAGNOSTIC FUNCTIONS - ADDED
+def safe_debug_products(request):
+    try:
+        from django.db import connection
+        
+        # SAFE: Just check if table exists without touching data
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT EXISTS (
+                    SELECT FROM information_schema.tables 
+                    WHERE table_schema = 'public' 
+                    AND table_name = 'products_product'
+                );
+            """)
+            table_exists = cursor.fetchone()[0]
+            
+            if table_exists:
+                cursor.execute("SELECT COUNT(*) FROM products_product;")
+                product_count = cursor.fetchone()[0]
+            else:
+                product_count = 0
+        
+        return JsonResponse({
+            "products_table_exists": table_exists,
+            "product_count": product_count,
+            "safe_check": True
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            "error": str(e),
+            "error_type": type(e).__name__
+        }, status=500)
+
+def check_migration_status(request):
+    try:
+        from django.db import connection
+        from django.core.management.color import no_style
+        from django.db.migrations.loader import MigrationLoader
+        
+        loader = MigrationLoader(connection)
+        applied_migrations = loader.applied_migrations
+        planned_migrations = loader.graph.leaf_nodes()
+        
+        # Get unapplied migrations
+        unapplied = [mig for mig in planned_migrations if mig not in applied_migrations]
+        
+        return JsonResponse({
+            "applied_migrations_count": len(applied_migrations),
+            "unapplied_migrations_count": len(unapplied),
+            "unapplied_migrations": [str(mig) for mig in unapplied],
+            "has_products_app": 'products' in loader.migrated_apps
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            "error": str(e),
+            "error_type": type(e).__name__
+        }, status=500)
+
 # Schema view for Swagger
 schema_view = get_schema_view(
     openapi.Info(
@@ -69,6 +129,10 @@ urlpatterns = [
     # TEST ENDPOINTS 
     path('api/test-email/', test_email),  
     path('api/health/', health_check),
+    
+    # NEW DIAGNOSTIC ENDPOINTS 
+    path('api/debug/safe-products/', safe_debug_products),
+    path('api/debug/migration-status/', check_migration_status),
     
     # API Documentation
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
