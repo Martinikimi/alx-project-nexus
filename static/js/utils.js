@@ -6,7 +6,7 @@ const CATEGORIES_API = `${API_BASE}/categories`;
 const CART_API = `${API_BASE}/cart`;
 const ORDERS_API = `${API_BASE}/orders`;
 const PAYMENTS_API = `${API_BASE}/payments`;
-const REVIEWS_API = `${API_BASE}/reviews/create`;
+const REVIEWS_API = `${API_BASE}/reviews`;
 
 // Global state
 let currentUser = null;

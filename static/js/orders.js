@@ -47,7 +47,7 @@ async function loadOrders() {
             if (Array.isArray(data)) {
                 orders = data;
             } else if (data.results && Array.isArray(data.results)) {
-                orders = data.results; // Paginated response
+                orders = data.results; 
             } else {
                 console.error('❌ Unexpected orders format:', data);
                 orders = [];
@@ -322,37 +322,36 @@ async function submitReview(orderId) {
         let productId = null;
         
         if (order.items && order.items.length > 0) {
-            // Try to get product ID from the first item
             const firstItem = order.items[0];
             
-            // Check all possible field names where product ID might be stored
+            // Try different field names for product ID
             if (firstItem.product_id) {
                 productId = firstItem.product_id;
             } else if (firstItem.product && firstItem.product.id) {
                 productId = firstItem.product.id;
             } else if (firstItem.product) {
                 productId = firstItem.product;
-            } else if (firstItem.id) {
-                productId = firstItem.id;
             }
         }
 
         if (!productId) {
-            throw new Error('Could not find product ID in order. Please contact support.');
+            throw new Error('Could not find product in order');
         }
 
-        // Submit the review
+        // Try different review data formats
+        const reviewData = {
+            product: parseInt(productId),  // Try "product" instead of "product_id"
+            rating: currentRating,
+            comment: comment
+        };
+
         const response = await fetch(`${REVIEWS_API}/`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                product_id: parseInt(productId),
-                rating: currentRating,
-                comment: comment
-            })
+            body: JSON.stringify(reviewData)
         });
 
         const data = await response.json();
