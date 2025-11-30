@@ -1,4 +1,4 @@
-# 🛒 NexusStore - Premium E-Commerce Platform
+🛒 NexusStore - Premium E-Commerce Platform
 
 A complete Django REST Framework e-commerce solution with modern frontend, JWT authentication, and high-performance database optimization.
 
@@ -330,6 +330,126 @@ HTTPS Enforcement in production
 Secure Headers (HSTS, XSS Protection)
 
 Input Validation with Django serializers
+
+📋 API Endpoints Reference
+Authentication Endpoints
+Endpoint	Method	Description
+/api/auth/register/	POST	User registration
+/api/auth/login/	POST	User login with JWT tokens
+/api/auth/profile/	GET	Get user profile (authenticated)
+/api/auth/logout/	POST	User logout with token blacklisting
+Product Endpoints
+Endpoint	Method	Description
+/api/products/	GET	List all products with filtering
+/api/products/	POST	Create new product (admin)
+/api/products/{id}/	GET	Get product details
+/api/products/{id}/	PUT	Update product (admin)
+/api/products/{id}/	DELETE	Delete product (admin)
+Cart Endpoints
+Endpoint	Method	Description
+/api/cart/	GET	Get cart contents
+/api/cart/	POST	Add item to cart
+/api/cart/{id}/	PUT	Update cart item quantity
+/api/cart/{id}/	DELETE	Remove item from cart
+Order Endpoints
+Endpoint	Method	Description
+/api/orders/	GET	Get user's order history
+/api/orders/	POST	Create new order from cart
+/api/orders/{id}/	GET	Get order details
+/api/orders/{id}/cancel/	POST	Cancel order
+🛠️ Admin Guide
+Accessing Admin Panel
+URL: /admin/
+
+Credentials: Use superuser account created during setup
+
+Key Admin Features
+User Management: View and manage user accounts
+
+Product Catalog: Add, edit, and manage products
+
+Category Management: Organize products into categories
+
+Order Processing: View and process customer orders
+
+Review Moderation: Manage product reviews and ratings
+
+Product Management
+Add new products with images
+
+Set pricing and inventory levels
+
+Organize by categories
+
+Manage product availability
+
+Order Management
+View all customer orders
+
+Update order status
+
+Track order processing
+
+Handle cancellations and refunds
+
+🔄 Development Workflow
+Adding New Features
+Create new app or extend existing ones
+
+Define models and serializers
+
+Create API views and URLs
+
+Update frontend JavaScript
+
+Test thoroughly
+
+Deploy to production
+
+Testing
+bash
+# Run tests
+python manage.py test
+
+# Test specific app
+python manage.py test users
+
+# Test with coverage
+coverage run manage.py test
+coverage report
+🐛 Troubleshooting
+Common Issues & Solutions
+Login 403 Errors
+
+Ensure CSRF middleware is properly configured
+
+Check CORS settings for frontend access
+
+Verify JWT authentication setup
+
+Email Not Sending
+
+Check Resend API key configuration
+
+Verify email templates exist
+
+Check server logs for errors
+
+Database Performance
+
+Ensure indexes are applied
+
+Check query optimization
+
+Monitor database connections
+
+Static Files Not Loading
+
+Run python manage.py collectstatic
+
+Check WhiteNoise configuration
+
+Verify static file paths
 
 📄 License
 MIT License - feel free to use this project for learning and development.
