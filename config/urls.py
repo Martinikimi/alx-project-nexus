@@ -50,7 +50,7 @@ def safe_debug_products(request):
     try:
         from django.db import connection
         
-        Try to access products table directly
+        #Try to access products table directly
         with connection.cursor() as cursor:
             # Method 1: Simple table existence check
             try:
