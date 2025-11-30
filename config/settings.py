@@ -53,7 +53,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_PERMISSION_CLES': [
         'rest_framework.permissions.AllowAny', 
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -110,23 +110,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database 
+# Database - ALWAYS USE POSTGRESQL
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
+    # Production (Render) - PostgreSQL
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
-            engine='django.db.backends.postgresql'
         )
     }
 else:
-    # Fallback for local development
+    # Local Development - PostgreSQL
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME', default='alx_nexus_local'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default='password'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default='5432'),
         }
     }
 
@@ -139,12 +143,6 @@ if DEBUG:
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 
-# SMTP Configuration 
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'martinikimi7@gmail.com'
-# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = 'martinikimi7@gmail.com'
 ADMIN_EMAIL = config('ADMIN_EMAIL', default='martinikimi7@gmail.com')
 
