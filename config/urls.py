@@ -45,23 +45,21 @@ def health_check(request):
     
     return JsonResponse({"status": "ok", "database": db_status, "debug": settings.DEBUG})
 
-# SAFE DIAGNOSTIC FUNCTIONS - FIXED
+# SAFE DIAGNOSTIC FUNCTIONS -
 def safe_debug_products(request):
     try:
         from django.db import connection
         
-        # SAFE: Just check if table exists without touching data
+        Try to access products table directly
         with connection.cursor() as cursor:
-            # Fixed SQL syntax
-            cursor.execute("""
-                SELECT EXISTS (
-                    SELECT FROM information_schema.tables 
-                    WHERE table_schema = 'public' 
-                    AND table_name = 'products_product'
-                )
-            """)
-            table_exists = cursor.fetchone()[0]
+            # Method 1: Simple table existence check
+            try:
+                cursor.execute("SELECT 1 FROM products_product LIMIT 1")
+                table_exists = True
+            except:
+                table_exists = False
             
+            # Method 2: Count products if table exists
             if table_exists:
                 cursor.execute("SELECT COUNT(*) FROM products_product")
                 product_count = cursor.fetchone()[0]
@@ -131,7 +129,7 @@ urlpatterns = [
     path('api/test-email/', test_email),  
     path('api/health/', health_check),
     
-    # NEW DIAGNOSTIC ENDPOINTS - ADDED
+    # NEW DIAGNOSTIC ENDPOINTS 
     path('api/debug/safe-products/', safe_debug_products),
     path('api/debug/migration-status/', check_migration_status),
     
