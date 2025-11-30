@@ -445,7 +445,7 @@ Monitor database connections
 
 Static Files Not Loading
 
-Run python manage.py collectstatic
+Run python manage.py collectstatic.
 
 Check WhiteNoise configuration
 
