@@ -1,15 +1,13 @@
 -- Database Performance Optimization Indexes
--- Customized for your actual database schema
+-- Safe version - only columns that exist
+
+-- USERS OPTIMIZATION
+CREATE INDEX IF NOT EXISTS idx_users_email ON users_user(email);
 
 -- PRODUCTS TABLE OPTIMIZATION
-CREATE INDEX idx_users_email ON users_user(email);
 CREATE INDEX IF NOT EXISTS idx_products_name ON products_product(name);
 CREATE INDEX IF NOT EXISTS idx_products_price ON products_product(price);
 CREATE INDEX IF NOT EXISTS idx_products_created_at ON products_product(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_products_is_featured ON products_product(is_featured) WHERE is_featured = true;
-CREATE INDEX IF NOT EXISTS idx_products_is_active ON products_product(is_active) WHERE is_active = true;
-CREATE INDEX IF NOT EXISTS idx_products_stock_quantity ON products_product(stock_quantity) WHERE stock_quantity > 0;
-CREATE INDEX IF NOT EXISTS idx_products_search_composite ON products_product(name, category_id, price);
 
 -- ORDERS TABLE OPTIMIZATION
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders_order(created_at DESC);
