@@ -4,13 +4,15 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserProfileSerializer
 from django.shortcuts import render
 
 def auth_page(request):
     return render(request, 'users/auth.html')
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class RegisterView(APIView):
     """
     Handles user registration
@@ -31,7 +33,7 @@ class RegisterView(APIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):
     """
     Handles user login
@@ -60,7 +62,6 @@ class LoginView(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class ProfileView(APIView):
     """
     Get current user profile
@@ -72,7 +73,6 @@ class ProfileView(APIView):
     def get(self, request):
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data)
-
 
 class LogoutView(APIView):
     """
@@ -101,4 +101,3 @@ class LogoutView(APIView):
             {'error': 'Refresh token required'}, 
             status=status.HTTP_400_BAD_REQUEST
         )
-
