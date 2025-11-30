@@ -29,7 +29,7 @@ def send_order_confirmation(order):
         subject = f" Order Confirmed! - #{order.order_number}"
         
         r = resend.Emails.send({
-            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "from": "ALX Project Nexus <noreply@alx-project-nexus.com>",
             "to": [order.user.email],
             "subject": subject,
             "html": html_content,
@@ -61,7 +61,7 @@ def send_new_order_notification(order):
         subject = f" New Order Received - #{order.order_number}"
         
         r = resend.Emails.send({
-            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "from": "ALX Project Nexus <noreply@alx-project-nexus.com>",
             "to": [admin_email],
             "subject": subject,
             "html": html_content,
@@ -83,7 +83,7 @@ def send_order_status_update(order):
             print(" No email address for user")
             return False
             
-        print(f" Sending status update to: {order.user.email}")
+        print(f"Sending status update to: {order.user.email}")
         
         context = {
             'order': order,
@@ -98,7 +98,7 @@ def send_order_status_update(order):
         subject = f" Order Update - #{order.order_number}"
         
         r = resend.Emails.send({
-            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "from": "ALX Project Nexus <noreply@alx-project-nexus.com>",
             "to": [order.user.email],
             "subject": subject,
             "html": html_content,
@@ -117,7 +117,7 @@ def send_order_shipped_notification(order):
     """
     try:
         if not order.user.email:
-            print("❌ No email address for user")
+            print(" No email address for user")
             return False
             
         print(f" Sending shipped notification to: {order.user.email}")
@@ -135,7 +135,7 @@ def send_order_shipped_notification(order):
         subject = f" Your Order Has Shipped! - #{order.order_number}"
         
         r = resend.Emails.send({
-            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "from": "ALX Project Nexus <noreply@alx-project-nexus.com>",
             "to": [order.user.email],
             "subject": subject,
             "html": html_content,
@@ -154,7 +154,7 @@ def send_test_email():
     """
     try:
         r = resend.Emails.send({
-            "from": "ALX Project Nexus <onboarding@resend.dev>",
+            "from": "ALX Project Nexus <noreply@alx-project-nexus.com>",
             "to": ["martinikimi7@gmail.com"],
             "subject": "Test Email from ALX Project Nexus",
             "html": "<strong>Congratulations! Your email system is working perfectly! 🎉</strong>",
