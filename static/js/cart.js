@@ -74,7 +74,7 @@ function updateCartCount() {
 async function addToCart(productId) {
     const token = localStorage.getItem('access_token');
     if (!token) {
-        showMessage('productsPage', '🔒 Please login to add items to cart', 'warning');
+        showMessage('productsPage', ' Please login to add items to cart', 'warning');
         navigateTo('/login');
         return;
     }
@@ -94,12 +94,12 @@ async function addToCart(productId) {
 
         if (response.ok) {
             await loadCart();
-            showMessage('productsPage', '✅ Product added to cart!', 'success');
+            showMessage('productsPage', ' Product added to cart!', 'success');
         } else {
             throw new Error('Failed to add to cart');
         }
     } catch (error) {
-        showMessage('productsPage', '❌ Error adding to cart', 'error');
+        showMessage('productsPage', ' Error adding to cart', 'error');
     }
 }
 
@@ -145,11 +145,11 @@ async function removeCartItem(itemId) {
         if (response.ok) {
             await loadCart();
             displayCart();
-            showMessage('cartPage', '✅ Item removed from cart', 'success');
+            showMessage('cartPage', 'Item removed from cart', 'success');
         }
     } catch (error) {
         console.error('Error removing cart item:', error);
-        showMessage('cartPage', '❌ Error removing item', 'error');
+        showMessage('cartPage', ' Error removing item', 'error');
     }
 }
 
@@ -167,11 +167,11 @@ async function clearCart() {
         if (response.ok) {
             await loadCart();
             displayCart();
-            showMessage('cartPage', '✅ Cart cleared successfully', 'success');
+            showMessage('cartPage', ' Cart cleared successfully', 'success');
         }
     } catch (error) {
         console.error('Error clearing cart:', error);
-        showMessage('cartPage', '❌ Error clearing cart', 'error');
+        showMessage('cartPage', ' Error clearing cart', 'error');
     }
 }
 
@@ -218,7 +218,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async functio
 
         if (response.ok) {
             const data = await response.json();
-            showMessage('checkoutMessage', `✅ Order created successfully! Order #${data.order_number}`, 'success');
+            showMessage('checkoutMessage', ` Order created successfully! Order #${data.order_number}`, 'success');
             await loadCart();
             setTimeout(() => {
                 navigateTo('/orders');
@@ -228,6 +228,6 @@ document.getElementById('checkoutForm').addEventListener('submit', async functio
             throw new Error(error.error || 'Failed to create order');
         }
     } catch (error) {
-        showMessage('checkoutMessage', `❌ Error: ${error.message}`, 'error');
+        showMessage('checkoutMessage', ` Error: ${error.message}`, 'error');
     }
 });

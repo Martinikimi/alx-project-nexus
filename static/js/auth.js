@@ -25,10 +25,10 @@ document.getElementById('loginFormElement').addEventListener('submit', async fun
                 navigateTo('/');
             }, 1000);
         } else {
-            showMessage('loginMessage', `❌ Error: ${data.error || JSON.stringify(data)}`, 'error');
+            showMessage('loginMessage', ` Error: ${data.error || JSON.stringify(data)}`, 'error');
         }
     } catch (error) {
-        showMessage('loginMessage', `❌ Network error: ${error.message}`, 'error');
+        showMessage('loginMessage', ` Network error: ${error.message}`, 'error');
     }
 });
 
@@ -48,7 +48,7 @@ document.getElementById('registerFormElement').addEventListener('submit', async 
     };
 
     if (formData.password !== formData.password_confirm) {
-        showMessage('registerMessage', '❌ Passwords do not match!', 'error');
+        showMessage('registerMessage', ' Passwords do not match!', 'error');
         return;
     }
 
@@ -64,16 +64,16 @@ document.getElementById('registerFormElement').addEventListener('submit', async 
         if (response.ok) {
             localStorage.setItem('access_token', data.access);
             localStorage.setItem('refresh_token', data.refresh);
-            showMessage('registerMessage', '✅ Registration successful!', 'success');
+            showMessage('registerMessage', ' Registration successful!', 'success');
             
             setTimeout(() => {
                 navigateTo('/');
             }, 1000);
         } else {
-            showMessage('registerMessage', `❌ Error: ${JSON.stringify(data)}`, 'error');
+            showMessage('registerMessage', ` Error: ${JSON.stringify(data)}`, 'error');
         }
     } catch (error) {
-        showMessage('registerMessage', `❌ Network error: ${error.message}`, 'error');
+        showMessage('registerMessage', ` Network error: ${error.message}`, 'error');
     }
 });
 

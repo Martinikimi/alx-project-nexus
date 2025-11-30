@@ -1,82 +1,168 @@
 🛒 NexusStore - Premium E-Commerce Platform
-
 A complete Django REST Framework e-commerce solution with modern frontend, JWT authentication, and high-performance database optimization.
 
-## 🚀 Features
+🚀 Features
+✅ Implemented Features
+User Authentication (JWT with refresh tokens)
 
-### Backend API
-- **User Authentication** (JWT with refresh tokens)
-- **Product & Category Management** with advanced filtering
-- **Shopping Cart** with real-time updates
-- **Order System** with status tracking
-- **Payment Integration** (M-Pesa, PayPal, Stripe, Card)
-- **Review & Rating System**
-- **Admin Dashboard** with analytics
-- **Email Notifications** with Resend API integration
-- **CSRF-Exempt Authentication** for seamless frontend integration
+Product & Category Management with advanced filtering
 
-### Frontend SPA
-- **Modern Single-Page Application** (Pure HTML/CSS/JS)
-- **Responsive Design** - Mobile-first approach
-- **Real-time Search & Filtering**
-- **Interactive Shopping Cart**
-- **User Profile Management**
-- **Order History & Tracking**
-- **Order Confirmation Emails** with professional templates
+Shopping Cart with real-time updates and persistence
 
-### Performance
-- **Database Optimization** with strategic indexes
-- **Fast Product Search** with category filtering
-- **Optimized API Responses** with pagination
-- **Efficient Cart Operations**
-- **Asynchronous Email Processing** with threading
+Order System with full order processing workflow
 
-## 🛠️ Tech Stack
+Review & Rating System with verified purchases
 
-### Backend
-- **Django 4.2** & Django REST Framework
-- **PostgreSQL** with performance optimization
-- **JWT Authentication**
-- **DRF-YASG** for automatic API documentation
-- **Resend API** for email delivery
-- **WhiteNoise** for static file serving
+User Profile Management with comprehensive data
 
-### Frontend
-- **Pure JavaScript** (No frameworks)
-- **CSS3** with Flexbox/Grid
-- **Font Awesome** icons
-- **Responsive Design**
+Admin Dashboard for content management
 
-## 📦 Installation & Setup
+API Documentation with Swagger/Redoc
 
-### Backend Setup
-```bash
-# Clone repository
+Responsive Frontend SPA with smooth navigation
+
+Database Optimization with strategic indexes
+
+🔜 Planned Features
+Payment gateway integration (Stripe, M-Pesa)
+
+Advanced email notifications with Resend API
+
+Admin analytics dashboard
+
+Product recommendations
+
+🛠️ Tech Stack
+Backend
+Django 5.2 & Django REST Framework
+
+PostgreSQL with performance optimization
+
+JWT Authentication with Simple JWT
+
+DRF-YASG for automatic API documentation
+
+WhiteNoise for static file serving
+
+CORS Headers for frontend integration
+
+Frontend
+Pure JavaScript (No frameworks - vanilla ES6+)
+
+CSS3 with Flexbox/Grid and responsive design
+
+Font Awesome icons
+
+Local Storage for token management
+
+SPA Architecture with client-side routing
+
+📋 Project Setup Guide
+Prerequisites
+Python 3.8+
+
+PostgreSQL (or SQLite for development)
+
+Git
+
+Step-by-Step Local Setup
+1. Clone and Setup Environment
+bash
+# Clone the repository
 git clone https://github.com/Martinikimi/alx-project-nexus.git
 cd alx-project-nexus
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
 
-# Install dependencies
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On Mac/Linux:
+source venv/bin/activate
+2. Install Dependencies
+bash
+# Install Python packages
 pip install -r requirements.txt
+3. Database Configuration
+bash
+# For PostgreSQL (recommended):
+# Create a PostgreSQL database named 'nexusstore'
+# Update DATABASE_URL in your environment variables
 
-# Run migrations
+# For SQLite (development):
+# No additional setup needed - uses db.sqlite3 automatically
+4. Environment Configuration
+Create a .env file in the project root:
+
+env
+DEBUG=True
+SECRET_KEY=your-secret-key-here
+DATABASE_URL=postgresql://username:password@localhost:5432/nexusstore
+5. Database Setup
+bash
+# Run migrations to create database tables
 python manage.py migrate
 
-# Create superuser
+# Create superuser for admin access
 python manage.py createsuperuser
-
-# Start development server
-python manage.py runserver
-Frontend Setup
-The frontend is automatically served by Django. Just start the server and visit:
-
+# Follow prompts to create admin account
+6. Collect Static Files
 bash
+python manage.py collectstatic --noinput
+7. Start Development Server
+bash
+# Start the Django development server
 python manage.py runserver
-# Frontend available at: http://127.0.0.1:8000/
+
+# Application will be available at:
+# Frontend: http://127.0.0.1:8000/
+# API Docs: http://127.0.0.1:8000/swagger/
+# Admin: http://127.0.0.1:8000/admin/
+Testing Your Setup
+Verify Backend API
+bash
+# Test API endpoints
+curl http://127.0.0.1:8000/api/products/
+curl http://127.0.0.1:8000/api/categories/
+Verify Frontend
+Open http://127.0.0.1:8000/ in your browser
+
+You should see the NexusStore homepage
+
+Navigate to different sections (Products, Cart, Login)
+
+Test Authentication
+Click "Register" to create a new account
+
+Login with your credentials
+
+Verify you can access protected pages (Profile, Cart)
+
+Production Deployment Notes
+For production deployment, ensure you:
+
+Set DEBUG=False in environment variables
+
+Configure a production PostgreSQL database
+
+Set up proper CORS origins
+
+Configure CSRF trusted origins
+
+Set up a proper SECRET_KEY
+
+🌐 Deployment
+Hosted on Render.com
+
+Live Application: https://alx-project-nexus-agn5.onrender.com
+
+API Documentation: https://alx-project-nexus-agn5.onrender.com/swagger/
+
+Alternative Docs: https://alx-project-nexus-agn5.onrender.com/redoc/
+
+⚠️ Important Note: Render's free tier uses ephemeral filesystem (data resets on deploy). For persistent data, upgrade to paid plan or use alternative hosting.
+
 🎯 Access Points
 Development
 🌐 Frontend Application: http://127.0.0.1:8000/
@@ -93,69 +179,46 @@ Production
 📚 API Documentation: https://alx-project-nexus-agn5.onrender.com/swagger/
 
 🔌 API Endpoints
-Authentication: /api/auth/ (Login, Register, Profile)
+Authentication
+POST /api/auth/register/ - User registration
 
-Products: /api/products/ (Search, Filter, Categories)
+POST /api/auth/login/ - User login with JWT
 
-Categories: /api/categories/
+GET /api/auth/profile/ - User profile
 
-Cart: /api/cart/ (Add, Remove, Update)
+POST /api/auth/logout/ - User logout
 
-Orders: /api/orders/ (Create, Track, Cancel)
+Products & Categories
+GET /api/products/ - List products with search/filter
 
-Payments: /api/payments/ (Process, Webhooks)
+GET /api/products/{id}/ - Product details
 
-Reviews: /api/reviews/ (Create, Rate, Helpful)
+GET /api/categories/ - List categories
 
-📧 Email System
-Features
-Order Confirmation emails to customers
+Shopping Cart
+GET /api/cart/ - Get cart contents
 
-Admin Notifications for new orders
+POST /api/cart/add/ - Add item to cart
 
-Professional HTML Templates with branding
+PUT /api/cart/update/{id}/ - Update cart item
 
-Asynchronous Processing for better performance
+DELETE /api/cart/remove/{id}/ - Remove from cart
 
-Resend API Integration for reliable delivery
+Orders & Payments
+GET /api/orders/ - Order history
 
-Email Templates
-Customer Confirmation (Green theme)
+POST /api/orders/ - Create new order
 
-Admin Notification (Red theme with action buttons)
+GET /api/orders/{id}/ - Order details
 
-Order Status Updates
+POST /api/payments/process/ - Process payment
 
-Shipping Notifications
+Reviews
+GET /api/reviews/ - Product reviews
 
-🚀 Frontend Features
-User Experience
-Single-Page Navigation - No page reloads
+POST /api/reviews/ - Create review
 
-Real-time Search - Instant product filtering
-
-Category Browsing - Direct category-to-products navigation
-
-Shopping Cart - Add/remove items with quantity control
-
-Responsive Design - Works on all devices
-
-Order Tracking - Real-time order status updates
-
-Key Pages
-Home - Featured products and categories
-
-Products - Advanced filtering and search
-
-Categories - Browse by product categories
-
-Cart - Manage shopping cart items
-
-Checkout - Place orders with shipping address
-
-Profile - User account management
-
-Orders - Order history and tracking
+PUT /api/reviews/{id}/ - Update review
 
 🗃️ Database Design
 The database uses a relational model optimized for e-commerce operations with proper indexing and relationships.
@@ -165,7 +228,7 @@ users - User accounts and profiles
 
 products - Product catalog with categories
 
-categories - Product categorization
+categories - Product categorization with hierarchy
 
 cart_items - Shopping cart management
 
@@ -175,24 +238,27 @@ payments - Payment transactions
 
 reviews - Product reviews and ratings
 
-🗃️ Database Performance Optimization
-Applied Optimizations
-12 Strategic Indexes across critical tables
+Database Performance Optimization
+Applied Optimizations:
 
-Composite Indexes for combined queries
+12+ Strategic indexes across critical tables
 
-Partial Indexes for conditional filtering
+Composite indexes for combined queries
 
-Descending Indexes for sorting performance
+Partial indexes for conditional filtering
 
-Apply Optimizations
+Descending indexes for sorting performance
+
+Apply Optimizations:
+
 bash
 # Apply all performance indexes
 python manage.py migrate
 
 # Verify index usage
 python manage.py dbshell -- -c "SELECT indexname, indexdef FROM pg_indexes WHERE tablename = 'products';"
-Performance Impact
+Performance Impact:
+
 Product searches: 20-40x faster
 
 Price filtering: 15-35x faster
@@ -200,27 +266,6 @@ Price filtering: 15-35x faster
 User orders: 10-25x faster
 
 Cart operations: 10-20x faster
-
-📚 API Documentation
-Interactive Documentation
-Our API is fully documented with auto-generated Swagger/OpenAPI documentation:
-
-Swagger UI: https://alx-project-nexus-agn5.onrender.com/swagger/ - Interactive API testing
-
-ReDoc: https://alx-project-nexus-agn5.onrender.com/redoc/ - Beautiful documentation reader
-
-Documentation Features
-✅ All endpoints with HTTP methods
-
-✅ Request/Response schemas
-
-✅ Authentication requirements
-
-✅ Live API testing
-
-✅ Code examples
-
-✅ Automatic updates when code changes
 
 🎨 Frontend Architecture
 JavaScript Structure
@@ -234,17 +279,53 @@ static/js/
 ├── cart.js           # Shopping cart operations
 └── orders.js         # Order processing
 Key Features Implemented
-SPA Navigation - Smooth page transitions
+SPA Navigation - Smooth page transitions without reloads
 
-API Integration - RESTful API communication
+API Integration - RESTful API communication with error handling
 
-Real-time Updates - Cart counts, search results
+Real-time Updates - Cart counts, search results, user status
 
-Error Handling - User-friendly error messages
+JWT Authentication - Secure token-based sessions
 
-Loading States - Better user experience
+Responsive Design - Mobile-first approach
 
-Token-based Authentication - Secure user sessions
+Loading States - Better user experience with feedback
+
+Key Pages
+Home - Featured products and categories
+
+Products - Advanced filtering and search
+
+Categories - Browse by product categories
+
+Cart - Manage shopping cart items with quantity control
+
+Checkout - Place orders with complete workflow
+
+Profile - User account management
+
+Orders - Order history and tracking
+
+📚 API Documentation
+Interactive Documentation
+Our API is fully documented with auto-generated Swagger/OpenAPI documentation:
+
+Swagger UI: /swagger/ - Interactive API testing
+
+ReDoc: /redoc/ - Beautiful documentation reader
+
+Documentation Features
+✅ All endpoints with HTTP methods
+
+✅ Request/Response schemas
+
+✅ Authentication requirements
+
+✅ Live API testing capabilities
+
+✅ Code examples
+
+✅ Automatic updates when code changes
 
 🔧 Development Commands
 Database Operations
@@ -263,43 +344,52 @@ bash
 python manage.py runserver
 
 # Collect static files (production)
-python manage.py collectstatic
-Email Testing
+python manage.py collectstatic --noinput
+Testing
 bash
-# Test email functionality
-python manage.py shell -c "from orders.utils import send_test_email; send_test_email()"
+# Run all tests
+python manage.py test
+
+# Test specific app
+python manage.py test users
+
+# Test with coverage
+coverage run manage.py test
+coverage report
 📁 Project Structure
 text
 alx-project-nexus/
-├── config/              # Django settings
-├── users/               # Authentication app
-├── products/            # Product management
-├── categories/          # Category system
-├── cart/                # Shopping cart
-├── orders/              # Order processing & email utils
-├── reviews/             # Review system
-├── payments/            # Payment integration
+├── config/              # Django settings & URLs
+├── users/               # Authentication & user management
+├── products/            # Product catalog management
+├── categories/          # Category system with hierarchy
+├── cart/                # Shopping cart functionality
+├── orders/              # Order processing system
+├── reviews/             # Review & rating system
+├── payments/            # Payment integration models
 ├── static/
-│   ├── css/            # Stylesheets
-│   └── js/             # JavaScript files
+│   ├── css/            # Stylesheets (responsive)
+│   └── js/             # JavaScript application
 ├── templates/
 │   └── emails/         # Email HTML templates
-├── database/           # Performance optimizations
-├── scripts/            # Utility scripts
+├── management/
+│   └── commands/       # Custom management commands
+├── requirements.txt    # Python dependencies
+├── render.yaml         # Render deployment config
 └── manage.py
-🚀 Deployment Ready
-Production Features
-Static files configured for production
+🚀 Production Features
+Ready for Production
+Static files configured for production with WhiteNoise
 
-Database optimization applied
+Database optimization applied with strategic indexes
 
-API documentation included
+API documentation included with interactive interfaces
 
-Frontend SPA fully functional
+Frontend SPA fully functional with client-side routing
 
 Security best practices implemented
 
-Email system with Resend API
+CORS configured for frontend-backend communication
 
 CSRF protection with exemptions for API endpoints
 
@@ -314,49 +404,51 @@ Configure domain and SSL
 
 Update CORS settings
 
-Set up email service (Resend API)
-
 Configure CSRF trusted origins
 
+Set up automated deployments
+
 🔒 Security Features
-JWT Authentication with refresh tokens
+JWT Authentication with refresh tokens and blacklisting
 
 CSRF Protection with exemptions for API endpoints
 
-CORS Configuration for frontend integration
+CORS Configuration for secure frontend integration
 
-HTTPS Enforcement in production
+HTTPS Enforcement in production environment
 
 Secure Headers (HSTS, XSS Protection)
 
 Input Validation with Django serializers
 
+Password Hashing with Django's built-in validators
+
 📋 API Endpoints Reference
 Authentication Endpoints
-Endpoint	Method	Description
-/api/auth/register/	POST	User registration
-/api/auth/login/	POST	User login with JWT tokens
-/api/auth/profile/	GET	Get user profile (authenticated)
-/api/auth/logout/	POST	User logout with token blacklisting
+Endpoint	Method	Description	Authentication
+/api/auth/register/	POST	User registration	None
+/api/auth/login/	POST	User login with JWT tokens	None
+/api/auth/profile/	GET	Get user profile	Required
+/api/auth/logout/	POST	User logout with token blacklisting	Required
 Product Endpoints
-Endpoint	Method	Description
-/api/products/	GET	List all products with filtering
-/api/products/	POST	Create new product (admin)
-/api/products/{id}/	GET	Get product details
-/api/products/{id}/	PUT	Update product (admin)
-/api/products/{id}/	DELETE	Delete product (admin)
+Endpoint	Method	Description	Authentication
+/api/products/	GET	List all products with filtering	Optional
+/api/products/	POST	Create new product	Admin
+/api/products/{id}/	GET	Get product details	Optional
+/api/products/{id}/	PUT	Update product	Admin
+/api/products/{id}/	DELETE	Delete product	Admin
 Cart Endpoints
-Endpoint	Method	Description
-/api/cart/	GET	Get cart contents
-/api/cart/	POST	Add item to cart
-/api/cart/{id}/	PUT	Update cart item quantity
-/api/cart/{id}/	DELETE	Remove item from cart
+Endpoint	Method	Description	Authentication
+/api/cart/	GET	Get cart contents	Required
+/api/cart/add/	POST	Add item to cart	Required
+/api/cart/update/{id}/	PUT	Update cart item quantity	Required
+/api/cart/remove/{id}/	DELETE	Remove item from cart	Required
 Order Endpoints
-Endpoint	Method	Description
-/api/orders/	GET	Get user's order history
-/api/orders/	POST	Create new order from cart
-/api/orders/{id}/	GET	Get order details
-/api/orders/{id}/cancel/	POST	Cancel order
+Endpoint	Method	Description	Authentication
+/api/orders/	GET	Get user's order history	Required
+/api/orders/	POST	Create new order from cart	Required
+/api/orders/{id}/	GET	Get order details	Required
+/api/orders/{id}/cancel/	POST	Cancel order	Required
 🛠️ Admin Guide
 Accessing Admin Panel
 URL: /admin/
@@ -375,22 +467,22 @@ Order Processing: View and process customer orders
 Review Moderation: Manage product reviews and ratings
 
 Product Management
-Add new products with images
+Add new products with images and descriptions
 
-Set pricing and inventory levels
+Set pricing, inventory levels, and availability
 
-Organize by categories
+Organize products into categories and subcategories
 
-Manage product availability
+Manage product features and specifications
 
 Order Management
-View all customer orders
+View all customer orders with detailed information
 
-Update order status
+Update order status throughout fulfillment process
 
-Track order processing
+Track order processing and shipping
 
-Handle cancellations and refunds
+Handle cancellations and customer service
 
 🔄 Development Workflow
 Adding New Features
@@ -398,58 +490,98 @@ Create new app or extend existing ones
 
 Define models and serializers
 
-Create API views and URLs
+Create API views and URL routes
 
-Update frontend JavaScript
+Update frontend JavaScript for new functionality
 
-Test thoroughly
+Test thoroughly across different scenarios
 
-Deploy to production
+Deploy to production environment
 
-Testing
-bash
-# Run tests
-python manage.py test
+Code Quality
+Follow Django and REST API best practices
 
-# Test specific app
-python manage.py test users
+Use consistent naming conventions
 
-# Test with coverage
-coverage run manage.py test
-coverage report
+Implement proper error handling
+
+Write comprehensive documentation
+
+Test across multiple browsers and devices
+
+⚠️ Known Limitations
+Current Limitations
+Data Persistence: Free Render tier may reset database on deploy
+
+Email Service: Basic email setup (Resend API configured but limited sending)
+
+Payment Processing: Payment models ready but no live gateway integration
+
+File Uploads: Image upload functionality needs cloud storage setup
+
+Workarounds
+For demo purposes: Upload data once and avoid redeploying
+
+For production: Upgrade to paid hosting with persistent storage
+
+Email: Can be enhanced with full Resend API integration
+
+Payments: Ready for Stripe/M-Pesa integration when needed
+
 🐛 Troubleshooting
 Common Issues & Solutions
-Login 403 Errors
+Login/Authentication Issues
 
-Ensure CSRF middleware is properly configured
+Ensure JWT tokens are properly stored in localStorage
 
-Check CORS settings for frontend access
+Check CORS settings for frontend-backend communication
 
-Verify JWT authentication setup
-
-Email Not Sending
-
-Check Resend API key configuration
-
-Verify email templates exist
-
-Check server logs for errors
+Verify CSRF exemptions for API endpoints
 
 Database Performance
 
-Ensure indexes are applied
+Ensure performance indexes are applied
 
-Check query optimization
+Check query optimization with EXPLAIN ANALYZE
 
-Monitor database connections
+Monitor database connections and pooling
 
 Static Files Not Loading
 
-Run python manage.py collectstatic.
+Run python manage.py collectstatic --noinput
 
-Check WhiteNoise configuration
+Check WhiteNoise configuration in settings
 
-Verify static file paths
+Verify static file paths in production
+
+API Documentation Errors
+
+Check that drf-yasg is properly installed
+
+Verify Swagger configuration in URLs
+
+Ensure all API views have proper docstrings
 
 📄 License
-MIT License - feel free to use this project for learning and development.
+MIT License - feel free to use this project for learning, development, and commercial purposes.
+
+👥 Contributing
+Fork the repository
+
+Create a feature branch
+
+Make your changes with tests
+
+Submit a pull request
+
+Ensure all tests pass and documentation is updated
+
+📞 Support
+For issues and questions:
+
+Create an issue on GitHub
+
+Check existing documentation
+
+Review API documentation at /swagger/
+

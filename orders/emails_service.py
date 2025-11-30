@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 def send_order_email_to_admin(order):
     """Send email to admin when a new order is placed"""
     try:
-        subject = f"🛒 New Order Received - #{order.order_number}"
+        subject = f"New Order #{order.order_number} - {order.user.email}"
         
         # Get order items
         items = order.items.all()
@@ -21,7 +21,8 @@ def send_order_email_to_admin(order):
             'settings': settings
         }
         
-        html_content = render_to_string('emails/admin_order_notification.html', context)
+        # FIXED: Correct template name
+        html_content = render_to_string('emails/new_order_notification.html', context)
         text_content = strip_tags(html_content)
         
         email = EmailMultiAlternatives(
@@ -45,7 +46,7 @@ def send_order_confirmation_to_customer(order):
     try:
         customer_email = order.user.email
         
-        subject = f"✅ Order Confirmation - #{order.order_number}"
+        subject = f"Order Confirmation - #{order.order_number}"
         
         # Get order items
         items = order.items.all()
@@ -58,7 +59,8 @@ def send_order_confirmation_to_customer(order):
             'settings': settings
         }
         
-        html_content = render_to_string('emails/customer_order_confirmation.html', context)
+        # FIXED: Correct template name
+        html_content = render_to_string('emails/order_confirmation.html', context)
         text_content = strip_tags(html_content)
         
         email = EmailMultiAlternatives(

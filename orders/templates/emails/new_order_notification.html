@@ -3,58 +3,76 @@
 <head>
     <meta charset="utf-8">
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: #28a745; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-        .order-details { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #e9ecef; }
-        .customer-info { background: #e9ecef; padding: 15px; border-radius: 8px; margin: 15px 0; }
-        .item { border-bottom: 1px solid #ddd; padding: 10px 0; }
-        .item:last-child { border-bottom: none; }
-        .total { font-weight: bold; font-size: 1.2em; margin-top: 15px; color: #28a745; text-align: right; }
-        .action { background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #007bff; color: white; padding: 20px; text-align: center; border-radius: 5px; }
+        .order-info { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🛍️ New Order Received!</h1>
-        </div>
+    <div class="header">
+        <h1>New Order Received</h1>
+        <h2>Order #{{ order.order_number }}</h2>
+    </div>
+    
+    <div class="order-info">
+        <h3>Customer Information</h3>
+        <p><strong>Customer:</strong> {{ customer_name }}</p>
+        <p><strong>Email:</strong> {{ order.user.email }}</p>
+        <p><strong>Contact:</strong> {{ order.user.phone_number|default:"Not provided" }}</p>
+    </div>
+
+    <div class="order-info">
+        <h3>Order Summary</h3>
+        <p><strong>Order Number:</strong> #{{ order.order_number }}</p>
+        <p><strong>Order Date:</strong> {{ order.created_at|date:"F j, Y g:i A" }}</p>
+        <p><strong>Status:</strong> {{ order.status|upper }}</p>
+        <p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
         
-        <p>Hello <strong>Admin</strong>,</p>
-        <p>A new order has been placed and requires processing.</p>
-        
-        <div class="customer-info">
-            <h3>Customer Information</h3>
-            <p><strong>Customer:</strong> {{ order.user.get_full_name|default:order.user.username }}</p>
-            <p><strong>Email:</strong> {{ order.user.email }}</p>
-            <p><strong>Phone:</strong> {{ order.user.phone_number|default:"Not provided" }}</p>
-        </div>
-        
-        <div class="order-details">
-            <h2>Order Details</h2>
-            <p><strong>Order Number:</strong> {{ order.order_number }}</p>
-            <p><strong>Order Date:</strong> {{ order.created_at|date:"F j, Y g:i A" }}</p>
-            <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
-            
-            <h3>Items Ordered:</h3>
-            {% for item in order_items %}
-            <div class="item">
-                <strong>{{ item.product.name }}</strong><br>
-                Quantity: {{ item.quantity }}<br>
-                Price: ${{ item.price }} each<br>
-                Subtotal: ${{ item.item_total }}
-            </div>
+        {% if order.shipping_address %}
+        <p><strong>Shipping Address:</strong><br>{{ order.shipping_address|linebreaks }}</p>
+        {% endif %}
+    </div>
+
+    <h3>Order Items</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>${{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.get_total_price }}</td>
+            </tr>
             {% endfor %}
-            
-            <div class="total">
-                <strong>Order Total: ${{ order.total_amount }}</strong>
-            </div>
-        </div>
-        
-        <div class="action">
-            <p><strong>🚀 Action Required:</strong> Please process this order and update the shipping status.</p>
-            <p><strong>📧 Customer Email:</strong> {{ order.user.email }}</p>
-        </div>
+        </tbody>
+    </table>
+    
+    <p><strong>GRAND TOTAL: ${{ order.total_amount }}</strong></p>
+    
+    <div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0;">
+        <h4>Next Steps:</h4>
+        <ol>
+            <li>Review order details above</li>
+            <li>Process the order in admin panel</li>
+            <li>Update order status as it progresses</li>
+            <li>Contact customer if needed</li>
+        </ol>
+        <p>Admin Dashboard: https://alx-project-nexus-agn5.onrender.com/admin/</p>
+    </div>
+    
+    <div class="footer">
+        <p>This is an automated notification from ALX Project Nexus</p>
     </div>
 </body>
 </html>

@@ -236,17 +236,17 @@ async function handleLogin(e) {
         if (response.ok) {
             localStorage.setItem('access_token', data.access);
             localStorage.setItem('refresh_token', data.refresh);
-            showMessage('loginMessage', '✅ Login successful!', 'success');
+            showMessage('loginMessage', ' Login successful!', 'success');
             
             setTimeout(() => {
                 navigateTo('/');
             }, 1000);
         } else {
-            showMessage('loginMessage', `❌ Error: ${data.detail || data.error || JSON.stringify(data)}`, 'error');
+            showMessage('loginMessage', ` Error: ${data.detail || data.error || JSON.stringify(data)}`, 'error');
         }
     } catch (error) {
         console.error('Login error:', error);
-        showMessage('loginMessage', `❌ Network error: ${error.message}`, 'error');
+        showMessage('loginMessage', ` Network error: ${error.message}`, 'error');
     }
 }
 
@@ -267,7 +267,7 @@ async function handleRegister(e) {
     };
 
     if (formData.password !== formData.password_confirm) {
-        showMessage('registerMessage', '❌ Passwords do not match!', 'error');
+        showMessage('registerMessage', ' Passwords do not match!', 'error');
         return;
     }
 
@@ -284,17 +284,17 @@ async function handleRegister(e) {
         if (response.ok) {
             localStorage.setItem('access_token', data.access);
             localStorage.setItem('refresh_token', data.refresh);
-            showMessage('registerMessage', '✅ Registration successful!', 'success');
+            showMessage('registerMessage', ' Registration successful!', 'success');
             
             setTimeout(() => {
                 navigateTo('/');
             }, 1000);
         } else {
-            showMessage('registerMessage', `❌ Error: ${JSON.stringify(data)}`, 'error');
+            showMessage('registerMessage', ` Error: ${JSON.stringify(data)}`, 'error');
         }
     } catch (error) {
         console.error('Register error:', error);
-        showMessage('registerMessage', `❌ Network error: ${error.message}`, 'error');
+        showMessage('registerMessage', ` Network error: ${error.message}`, 'error');
     }
 }
 

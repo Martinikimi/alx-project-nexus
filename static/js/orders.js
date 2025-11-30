@@ -1,11 +1,11 @@
 // DEBUG: Check if ORDERS_API is available
-console.log('🔍 ORDERS.js LOADED - ORDERS_API:', typeof ORDERS_API !== 'undefined' ? ORDERS_API : 'UNDEFINED');
+console.log(' ORDERS.js LOADED - ORDERS_API:', typeof ORDERS_API !== 'undefined' ? ORDERS_API : 'UNDEFINED');
 
 // If ORDERS_API is undefined, define it temporarily
 if (typeof ORDERS_API === 'undefined') {
-    console.error('❌ ORDERS_API is undefined! Script loading order issue.');
+    console.error(' ORDERS_API is undefined! Script loading order issue.');
     const ORDERS_API = window.location.origin + '/api/orders';
-    console.log('🔧 TEMPORARY FIX: Defined ORDERS_API as:', ORDERS_API);
+    console.log(' TEMPORARY FIX: Defined ORDERS_API as:', ORDERS_API);
 }
 
 // Order Functions
@@ -14,12 +14,12 @@ async function loadOrders() {
     const loadingElement = document.getElementById('ordersLoading');
     const listElement = document.getElementById('ordersList');
     
-    console.log('🔐 DEBUG: Token exists:', !!token);
-    console.log('📡 DEBUG: ORDERS_API:', ORDERS_API);
-    console.log('📡 DEBUG: Calling URL:', `${ORDERS_API}/`);
+    console.log(' DEBUG: Token exists:', !!token);
+    console.log(' DEBUG: ORDERS_API:', ORDERS_API);
+    console.log('DEBUG: Calling URL:', `${ORDERS_API}/`);
     
     if (!token) {
-        console.log('❌ DEBUG: No token, redirecting to login');
+        console.log(' DEBUG: No token, redirecting to login');
         navigateTo('/login');
         return;
     }
@@ -28,7 +28,7 @@ async function loadOrders() {
     listElement.innerHTML = '';
 
     try {
-        console.log('🚀 DEBUG: Making API request to orders...');
+        console.log(' DEBUG: Making API request to orders...');
         const response = await fetch(`${ORDERS_API}/`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -36,11 +36,11 @@ async function loadOrders() {
             },
         });
 
-        console.log('📊 DEBUG: Response status:', response.status);
+        console.log(' DEBUG: Response status:', response.status);
         
         if (response.ok) {
             const data = await response.json();
-            console.log('📦 DEBUG: Raw orders data:', data);
+            console.log(' DEBUG: Raw orders data:', data);
             
             // FIX: Handle both array and paginated response formats
             let orders = [];
@@ -49,21 +49,21 @@ async function loadOrders() {
             } else if (data.results && Array.isArray(data.results)) {
                 orders = data.results; 
             } else {
-                console.error('❌ Unexpected orders format:', data);
+                console.error(' Unexpected orders format:', data);
                 orders = [];
             }
             
-            console.log('✅ DEBUG: Processed orders:', orders);
+            console.log(' DEBUG: Processed orders:', orders);
             displayOrders(orders);
         } else {
-            console.error('❌ DEBUG: API Error - Status:', response.status);
+            console.error(' DEBUG: API Error - Status:', response.status);
             const errorText = await response.text();
-            console.error('❌ DEBUG: Error response:', errorText);
-            listElement.innerHTML = `<div class="error">❌ Error loading orders (${response.status})</div>`;
+            console.error(' DEBUG: Error response:', errorText);
+            listElement.innerHTML = `<div class="error"> Error loading orders (${response.status})</div>`;
         }
     } catch (error) {
-        console.error('❌ DEBUG: Network error:', error);
-        listElement.innerHTML = `<div class="error">❌ Error loading orders: ${error.message}</div>`;
+        console.error(' DEBUG: Network error:', error);
+        listElement.innerHTML = `<div class="error"> Error loading orders: ${error.message}</div>`;
     } finally {
         loadingElement.classList.add('hidden');
     }
@@ -224,7 +224,7 @@ async function requestRefund(orderId) {
         });
 
         if (response.ok) {
-            showMessage('orderDetailContent', '✅ Refund request submitted successfully!', 'success');
+            showMessage('orderDetailContent', ' Refund request submitted successfully!', 'success');
             setTimeout(() => {
                 loadOrderDetail(orderId);
             }, 2000);
@@ -233,7 +233,7 @@ async function requestRefund(orderId) {
             throw new Error(error.error || 'Failed to request refund');
         }
     } catch (error) {
-        showMessage('orderDetailContent', `❌ Error: ${error.message}`, 'error');
+        showMessage('orderDetailContent', ` Error: ${error.message}`, 'error');
     }
 }
 
@@ -251,7 +251,7 @@ async function cancelOrder(orderId) {
         });
 
         if (response.ok) {
-            showMessage('orderDetailContent', '✅ Order cancelled successfully!', 'success');
+            showMessage('orderDetailContent', ' Order cancelled successfully!', 'success');
             setTimeout(() => {
                 loadOrderDetail(orderId);
             }, 2000);
@@ -260,7 +260,7 @@ async function cancelOrder(orderId) {
             throw new Error(error.error || 'Failed to cancel order');
         }
     } catch (error) {
-        showMessage('orderDetailContent', `❌ Error: ${error.message}`, 'error');
+        showMessage('orderDetailContent', ` Error: ${error.message}`, 'error');
     }
 }
 
@@ -299,7 +299,7 @@ async function submitReview(orderId) {
     const comment = document.getElementById('reviewComment').value;
 
     if (currentRating === 0) {
-        showMessage('reviewSection', '❌ Please select a rating', 'error');
+        showMessage('reviewSection', ' Please select a rating', 'error');
         return;
     }
 
@@ -345,7 +345,7 @@ async function submitReview(orderId) {
             comment: comment
         };
 
-        console.log('📦 DEBUG: Sending review data:', reviewData);
+        console.log(' DEBUG: Sending review data:', reviewData);
 
         const response = await fetch(`${REVIEWS_API}/create/`, {
             method: 'POST',
@@ -356,14 +356,14 @@ async function submitReview(orderId) {
             body: JSON.stringify(reviewData)
         });
 
-        console.log('📊 DEBUG: Response status:', response.status);
+        console.log('DEBUG: Response status:', response.status);
 
         // ADDED: Get the actual error response from backend
         const errorResponse = await response.json();
-        console.log('❌ DEBUG: Backend error response:', errorResponse);
+        console.log(' DEBUG: Backend error response:', errorResponse);
 
         if (response.ok) {
-            showMessage('reviewSection', '✅ Review submitted successfully!', 'success');
+            showMessage('reviewSection', ' Review submitted successfully!', 'success');
             hideReviewForm();
         } else {
             // SHOW THE ACTUAL ERROR FROM BACKEND
@@ -371,7 +371,7 @@ async function submitReview(orderId) {
         }
     } catch (error) {
         console.error('Review submission error:', error);
-        showMessage('reviewSection', `❌ Error: ${error.message}`, 'error');
+        showMessage('reviewSection', ` Error: ${error.message}`, 'error');
     }
 }
 
