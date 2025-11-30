@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny 
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
@@ -18,6 +18,8 @@ class RegisterView(APIView):
     Handles user registration
     POST /api/auth/register/
     """
+    permission_classes = [AllowAny]
+    
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         
@@ -39,6 +41,8 @@ class LoginView(APIView):
     Handles user login
     POST /api/auth/login/
     """
+    permission_classes = [AllowAny]  
+    
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
         
