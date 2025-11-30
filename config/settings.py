@@ -130,8 +130,14 @@ else:
         }
     }
 
-# Email Configuration - FIXED VERSION
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Always use console for now
+# Email Configuration 
+if DEBUG:
+    # Development: print to console
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Production: actually send emails
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+     
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -140,7 +146,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = 'martinikimi7@gmail.com'
 ADMIN_EMAIL = config('ADMIN_EMAIL', default='martinikimi7@gmail.com')
 
-# For development - print emails to console (REMOVED the problematic if DEBUG block)
+# For development - print emails to console
 
 # Auth
 AUTH_USER_MODEL = 'users.User'
@@ -278,7 +284,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 1209600  
 SESSION_SAVE_EVERY_REQUEST = False
 
-# Custom configuration for your e-commerce
+# Custom configuration for the e-commerce
 ECOMMERCE_CONFIG = {
     'SITE_NAME': 'ALX Project Nexus',
     'SUPPORT_EMAIL': 'martinikimi7@gmail.com',
