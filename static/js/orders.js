@@ -345,7 +345,8 @@ async function submitReview(orderId) {
             comment: comment
         };
 
-        // FIX: Use the correct endpoint - /create/ instead of /
+        console.log('📦 DEBUG: Sending review data:', reviewData);
+
         const response = await fetch(`${REVIEWS_API}/create/`, {
             method: 'POST',
             headers: {
@@ -355,13 +356,18 @@ async function submitReview(orderId) {
             body: JSON.stringify(reviewData)
         });
 
-        const data = await response.json();
+        console.log('📊 DEBUG: Response status:', response.status);
+
+        // ADDED: Get the actual error response from backend
+        const errorResponse = await response.json();
+        console.log('❌ DEBUG: Backend error response:', errorResponse);
 
         if (response.ok) {
             showMessage('reviewSection', '✅ Review submitted successfully!', 'success');
             hideReviewForm();
         } else {
-            throw new Error(data.detail || data.error || 'Failed to submit review');
+            // SHOW THE ACTUAL ERROR FROM BACKEND
+            throw new Error(JSON.stringify(errorResponse));
         }
     } catch (error) {
         console.error('Review submission error:', error);
