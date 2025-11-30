@@ -340,7 +340,7 @@ async function submitReview(orderId) {
 
         // Try different review data formats
         const reviewData = {
-            product: parseInt(productId),  
+            product_id: parseInt(productId),  
             rating: currentRating,
             comment: comment
         };
