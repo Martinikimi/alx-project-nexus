@@ -308,7 +308,7 @@ SESSION_SAVE_EVERY_REQUEST = False
 ECOMMERCE_CONFIG = {
     'SITE_NAME': 'ALX Project Nexus',
     'SUPPORT_EMAIL': 'martinikimi7@gmail.com',
-    'CURRENCY': 'Ksh',
+    'CURRENCY': '$',
     'TAX_RATE': 0.08,  
     'SHIPPING_COST': 5.00,
     'FREE_SHIPPING_THRESHOLD': 50.00,

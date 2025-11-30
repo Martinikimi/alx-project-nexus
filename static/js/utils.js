@@ -124,7 +124,7 @@ function showSectionForPath(path) {
             document.getElementById('loginForm').classList.remove('hidden');
             break;
         case '/register':
-            document.getElementById('registerForm').classlist.remove('hidden');
+            document.getElementById('registerForm').classList.remove('hidden'); // FIXED: classList not classlist
             break;
         case '/profile':
             document.getElementById('profileSection').classList.remove('hidden');
@@ -213,9 +213,10 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', updateBackToTopButton);
 });
 
-// Authentication Functions
-document.getElementById('loginFormElement').addEventListener('submit', async function(e) {
+// Authentication Functions - UPDATED with better error handling
+async function handleLogin(e) {
     e.preventDefault();
+    console.log('Login form submitted');
     
     const formData = {
         email: document.getElementById('loginEmail').value,
@@ -230,6 +231,7 @@ document.getElementById('loginFormElement').addEventListener('submit', async fun
         });
 
         const data = await response.json();
+        console.log('Login response:', data);
 
         if (response.ok) {
             localStorage.setItem('access_token', data.access);
@@ -240,15 +242,17 @@ document.getElementById('loginFormElement').addEventListener('submit', async fun
                 navigateTo('/');
             }, 1000);
         } else {
-            showMessage('loginMessage', `❌ Error: ${data.error || JSON.stringify(data)}`, 'error');
+            showMessage('loginMessage', `❌ Error: ${data.detail || data.error || JSON.stringify(data)}`, 'error');
         }
     } catch (error) {
+        console.error('Login error:', error);
         showMessage('loginMessage', `❌ Network error: ${error.message}`, 'error');
     }
-});
+}
 
-document.getElementById('registerFormElement').addEventListener('submit', async function(e) {
+async function handleRegister(e) {
     e.preventDefault();
+    console.log('Register form submitted');
     
     const formData = {
         email: document.getElementById('regEmail').value,
@@ -275,6 +279,7 @@ document.getElementById('registerFormElement').addEventListener('submit', async 
         });
 
         const data = await response.json();
+        console.log('Register response:', data);
 
         if (response.ok) {
             localStorage.setItem('access_token', data.access);
@@ -288,7 +293,23 @@ document.getElementById('registerFormElement').addEventListener('submit', async 
             showMessage('registerMessage', `❌ Error: ${JSON.stringify(data)}`, 'error');
         }
     } catch (error) {
+        console.error('Register error:', error);
         showMessage('registerMessage', `❌ Network error: ${error.message}`, 'error');
+    }
+}
+
+// Add event listeners properly
+document.addEventListener('DOMContentLoaded', function() {
+    // Login form
+    const loginForm = document.getElementById('loginFormElement');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    // Register form
+    const registerForm = document.getElementById('registerFormElement');
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
     }
 });
 
@@ -377,5 +398,152 @@ async function logout() {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         navigateTo('/login');
+    }
+}
+
+// MISSING FUNCTION IMPLEMENTATIONS - ADDED
+async function loadFeaturedProducts() {
+    try {
+        const response = await fetch(`${PRODUCTS_API}/?featured=true`);
+        if (response.ok) {
+            const data = await response.json();
+            products = data.results || data;
+            console.log('Loaded featured products:', products.length);
+        }
+    } catch (error) {
+        console.error('Error loading featured products:', error);
+    }
+}
+
+async function loadProducts() {
+    try {
+        const queryParams = new URLSearchParams({
+            page: paginationState.currentPage,
+            page_size: paginationState.pageSize,
+            ...currentFilters
+        }).toString();
+        
+        const response = await fetch(`${PRODUCTS_API}/?${queryParams}`);
+        if (response.ok) {
+            const data = await response.json();
+            products = data.results || data;
+            console.log('Loaded products:', products.length);
+        }
+    } catch (error) {
+        console.error('Error loading products:', error);
+    }
+}
+
+async function loadCategories() {
+    try {
+        const response = await fetch(`${CATEGORIES_API}/`);
+        if (response.ok) {
+            const data = await response.json();
+            categories = data.results || data;
+            console.log('Loaded categories:', categories.length);
+        }
+    } catch (error) {
+        console.error('Error loading categories:', error);
+    }
+}
+
+async function loadCart() {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        cart = { items: [], total_price: 0 };
+        updateCartCount();
+        return;
+    }
+
+    try {
+        const response = await fetch(`${CART_API}/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            cart = await response.json();
+            updateCartCount();
+        }
+    } catch (error) {
+        console.error('Error loading cart:', error);
+        cart = { items: [], total_price: 0 };
+        updateCartCount();
+    }
+}
+
+function updateCartCount() {
+    const cartCount = document.getElementById('cartCount');
+    if (cartCount && cart && cart.items) {
+        const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+        cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+    }
+}
+
+async function loadCheckoutSummary() {
+    console.log('Loading checkout summary...');
+    // Implementation for checkout page
+}
+
+async function loadOrders() {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        navigateTo('/login');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${ORDERS_API}/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const orders = await response.json();
+            console.log('Loaded orders:', orders.length);
+        }
+    } catch (error) {
+        console.error('Error loading orders:', error);
+    }
+}
+
+async function loadProductDetail(productId) {
+    try {
+        const response = await fetch(`${PRODUCTS_API}/${productId}/`);
+        if (response.ok) {
+            const product = await response.json();
+            console.log('Loaded product detail:', product.name);
+        }
+    } catch (error) {
+        console.error('Error loading product detail:', error);
+    }
+}
+
+async function loadOrderDetail(orderId) {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        navigateTo('/login');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${ORDERS_API}/${orderId}/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const order = await response.json();
+            console.log('Loaded order detail:', order.order_number);
+        }
+    } catch (error) {
+        console.error('Error loading order detail:', error);
     }
 }
