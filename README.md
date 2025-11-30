@@ -1,5 +1,3 @@
-
-
 # 🛒 NexusStore - Premium E-Commerce Platform
 
 A complete Django REST Framework e-commerce solution with modern frontend, JWT authentication, and high-performance database optimization.
@@ -14,6 +12,8 @@ A complete Django REST Framework e-commerce solution with modern frontend, JWT a
 - **Payment Integration** (M-Pesa, PayPal, Stripe, Card)
 - **Review & Rating System**
 - **Admin Dashboard** with analytics
+- **Email Notifications** with Resend API integration
+- **CSRF-Exempt Authentication** for seamless frontend integration
 
 ### Frontend SPA
 - **Modern Single-Page Application** (Pure HTML/CSS/JS)
@@ -22,12 +22,14 @@ A complete Django REST Framework e-commerce solution with modern frontend, JWT a
 - **Interactive Shopping Cart**
 - **User Profile Management**
 - **Order History & Tracking**
+- **Order Confirmation Emails** with professional templates
 
 ### Performance
 - **Database Optimization** with strategic indexes
 - **Fast Product Search** with category filtering
 - **Optimized API Responses** with pagination
 - **Efficient Cart Operations**
+- **Asynchronous Email Processing** with threading
 
 ## 🛠️ Tech Stack
 
@@ -36,6 +38,8 @@ A complete Django REST Framework e-commerce solution with modern frontend, JWT a
 - **PostgreSQL** with performance optimization
 - **JWT Authentication**
 - **DRF-YASG** for automatic API documentation
+- **Resend API** for email delivery
+- **WhiteNoise** for static file serving
 
 ### Frontend
 - **Pure JavaScript** (No frameworks)
@@ -48,7 +52,7 @@ A complete Django REST Framework e-commerce solution with modern frontend, JWT a
 ### Backend Setup
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/alx-project-nexus.git
+git clone https://github.com/Martinikimi/alx-project-nexus.git
 cd alx-project-nexus
 
 # Create virtual environment
@@ -83,7 +87,12 @@ Development
 
 📊 Admin Panel: http://127.0.0.1:8000/admin/
 
-API Endpoints
+Production
+🌐 Live Application: https://alx-project-nexus-agn5.onrender.com
+
+📚 API Documentation: https://alx-project-nexus-agn5.onrender.com/swagger/
+
+🔌 API Endpoints
 Authentication: /api/auth/ (Login, Register, Profile)
 
 Products: /api/products/ (Search, Filter, Categories)
@@ -98,6 +107,27 @@ Payments: /api/payments/ (Process, Webhooks)
 
 Reviews: /api/reviews/ (Create, Rate, Helpful)
 
+📧 Email System
+Features
+Order Confirmation emails to customers
+
+Admin Notifications for new orders
+
+Professional HTML Templates with branding
+
+Asynchronous Processing for better performance
+
+Resend API Integration for reliable delivery
+
+Email Templates
+Customer Confirmation (Green theme)
+
+Admin Notification (Red theme with action buttons)
+
+Order Status Updates
+
+Shipping Notifications
+
 🚀 Frontend Features
 User Experience
 Single-Page Navigation - No page reloads
@@ -109,6 +139,8 @@ Category Browsing - Direct category-to-products navigation
 Shopping Cart - Add/remove items with quantity control
 
 Responsive Design - Works on all devices
+
+Order Tracking - Real-time order status updates
 
 Key Pages
 Home - Featured products and categories
@@ -126,12 +158,9 @@ Profile - User account management
 Orders - Order history and tracking
 
 🗃️ Database Design
-![ERD Diagram](/docs/erd.png)
-
 The database uses a relational model optimized for e-commerce operations with proper indexing and relationships.
 
 Key Tables:
-
 users - User accounts and profiles
 
 products - Product catalog with categories
@@ -159,7 +188,7 @@ Descending Indexes for sorting performance
 Apply Optimizations
 bash
 # Apply all performance indexes
-python scripts/database_indexes.py
+python manage.py migrate
 
 # Verify index usage
 python manage.py dbshell -- -c "SELECT indexname, indexdef FROM pg_indexes WHERE tablename = 'products';"
@@ -176,9 +205,9 @@ Cart operations: 10-20x faster
 Interactive Documentation
 Our API is fully documented with auto-generated Swagger/OpenAPI documentation:
 
-Swagger UI: http://127.0.0.1:8000/swagger/ - Interactive API testing
+Swagger UI: https://alx-project-nexus-agn5.onrender.com/swagger/ - Interactive API testing
 
-ReDoc: http://127.0.0.1:8000/redoc/ - Beautiful documentation reader
+ReDoc: https://alx-project-nexus-agn5.onrender.com/redoc/ - Beautiful documentation reader
 
 Documentation Features
 ✅ All endpoints with HTTP methods
@@ -215,6 +244,8 @@ Error Handling - User-friendly error messages
 
 Loading States - Better user experience
 
+Token-based Authentication - Secure user sessions
+
 🔧 Development Commands
 Database Operations
 bash
@@ -233,6 +264,10 @@ python manage.py runserver
 
 # Collect static files (production)
 python manage.py collectstatic
+Email Testing
+bash
+# Test email functionality
+python manage.py shell -c "from orders.utils import send_test_email; send_test_email()"
 📁 Project Structure
 text
 alx-project-nexus/
@@ -241,13 +276,14 @@ alx-project-nexus/
 ├── products/            # Product management
 ├── categories/          # Category system
 ├── cart/                # Shopping cart
-├── orders/              # Order processing
+├── orders/              # Order processing & email utils
 ├── reviews/             # Review system
 ├── payments/            # Payment integration
 ├── static/
 │   ├── css/            # Stylesheets
 │   └── js/             # JavaScript files
-├── templates/          # HTML templates
+├── templates/
+│   └── emails/         # Email HTML templates
 ├── database/           # Performance optimizations
 ├── scripts/            # Utility scripts
 └── manage.py
@@ -263,6 +299,10 @@ Frontend SPA fully functional
 
 Security best practices implemented
 
+Email system with Resend API
+
+CSRF protection with exemptions for API endpoints
+
 Deployment Checklist
 Set production environment variables
 
@@ -274,7 +314,22 @@ Configure domain and SSL
 
 Update CORS settings
 
-Set up email service
+Set up email service (Resend API)
+
+Configure CSRF trusted origins
+
+🔒 Security Features
+JWT Authentication with refresh tokens
+
+CSRF Protection with exemptions for API endpoints
+
+CORS Configuration for frontend integration
+
+HTTPS Enforcement in production
+
+Secure Headers (HSTS, XSS Protection)
+
+Input Validation with Django serializers
 
 📄 License
 MIT License - feel free to use this project for learning and development.
