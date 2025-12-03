@@ -61,7 +61,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Increased for testing
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -136,7 +136,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database - ORIGINAL WITH SQLITE FALLBACK
+# Database 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
     DATABASES = {
@@ -159,7 +159,7 @@ else:
 # Email Configuration - RESEND 
 RESEND_API_KEY = config('RESEND_API_KEY', default='re_EsfeBsVY_CDpyPVH2ddEVS2t7qNPzntTT')
 
-# Keep console backend for development, but use Resend API directly in utils
+# Keep console backend for development, use Resend API directly in utils
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:

@@ -341,15 +341,22 @@ Cart operations: 10-20x faster
 
 🎨 Frontend Architecture
 JavaScript Structure
-text
-static/js/
-├── utils.js        # Core utilities & API helpers
-├── app.js          # Main application initialization
-├── auth.js         # Authentication functions
-├── products.js     # Product listing & filtering
-├── categories.js   # Category management
-├── cart.js         # Shopping cart operations
-└── orders.js       # Order processing
+Project Root (static/js/)
+
+utils.js - Core utilities & API helpers
+
+app.js - Main application initialization
+
+auth.js - Authentication functions
+
+products.js - Product listing & filtering
+
+categories.js - Category management
+
+cart.js - Shopping cart operations
+
+orders.js - Order processing
+
 Key Features Implemented
 SPA Navigation - Smooth page transitions without reloads
 
@@ -424,26 +431,42 @@ python manage.py test users
 coverage run manage.py test
 coverage report
 📁 Project Structure
-text
-alx-project-nexus/
-├── config/                      # Django settings & URLs
-├── users/                       # Authentication & user management
-├── products/                    # Product catalog management
-├── categories/                  # Category system with hierarchy
-├── cart/                        # Shopping cart functionality
-├── orders/                      # Order processing system
-├── reviews/                     # Review & rating system
-├── payments/                    # Payment integration models
-├── static/
-│   ├── css/                    # Stylesheets (responsive)
-│   └── js/                     # JavaScript application
-├── templates/
-│   └── emails/                 # Email HTML templates
-├── management/
-│   └── commands/               # Custom management commands
-├── requirements.txt            # Python dependencies
-├── render.yaml                 # Render deployment config
-└── manage.py                   # Django management script
+Project Root (alx-project-nexus/)
+
+config/ - Django settings & URLs configuration
+
+users/ - Authentication & user management app
+
+products/ - Product catalog management app
+
+categories/ - Category system with hierarchy app
+
+cart/ - Shopping cart functionality app
+
+orders/ - Order processing system app
+
+reviews/ - Review & rating system app
+
+payments/ - Payment integration models app
+
+static/
+
+css/ - Responsive stylesheets
+
+js/ - JavaScript application files
+
+templates/
+
+emails/ - Email HTML templates
+
+management/commands/ - Custom Django management commands
+
+requirements.txt - Python dependencies
+
+render.yaml - Render deployment configuration
+
+manage.py - Django management script
+
 🚀 Production Features
 Ready for Production
 Static files configured for production with WhiteNoise
@@ -675,3 +698,4 @@ Customer: Register a new account through the interface
 Test Products: Add sample products through admin panel
 
 Developed by Martin Ikimi - A complete eCommerce solution built with Django REST Framework and vanilla JavaScript.
+

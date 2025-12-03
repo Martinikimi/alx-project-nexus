@@ -159,7 +159,7 @@ urlpatterns = [
     path('profile/', TemplateView.as_view(template_name='index.html'), name='profile'),
 ]
 
-# Catch-all route should be ABSOLUTELY LAST
+# Catch-all route 
 urlpatterns += [
     path('<path:unknown_path>/', TemplateView.as_view(template_name='index.html')),
 ]

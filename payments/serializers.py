@@ -100,7 +100,7 @@ class PaymentStatusSerializer(serializers.ModelSerializer):
         valid_transitions = {
             'pending': ['completed', 'failed', 'cancelled'],
             'completed': ['refunded'],
-            'failed': ['pending'],  # Allow retry
+            'failed': ['pending'],
             'refunded': [],
             'cancelled': []
         }
