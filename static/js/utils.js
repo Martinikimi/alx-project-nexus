@@ -1,4 +1,4 @@
-// ====== API CONFIGURATION - WORKS FOR BOTH LOCALHOST & RENDER ======
+// ====== API CONFIGURATION  ======
 const IS_LOCAL = window.location.hostname === 'localhost' || 
                  window.location.hostname === '127.0.0.1';
 
@@ -19,7 +19,6 @@ const REVIEWS_API = `${API_BASE}/reviews`;
 console.log('🌐 App initialized');
 console.log('📍 Running on:', IS_LOCAL ? 'Localhost' : 'Render');
 console.log('🚀 API Base URL:', API_BASE_URL);
-// =========================================================
 
 // Global state
 let currentUser = null;
@@ -238,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ App initialized successfully');
 });
 
-// Authentication Functions - UPDATED with better error handling
+// Authentication Functions 
 async function handleLogin(e) {
     if (e) e.preventDefault();
     console.log('Login form submitted');
@@ -703,7 +702,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// MISSING FUNCTION IMPLEMENTATIONS - ADDED
+// MISSING FUNCTION IMPLEMENTATIONS 
 async function loadFeaturedProducts() {
     try {
         const response = await fetch(`${PRODUCTS_API}/?is_featured=true&page_size=4`);
